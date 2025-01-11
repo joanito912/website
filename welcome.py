@@ -11,7 +11,7 @@ if st.button("Balloon"):
     st.balloons()
     
 st.write("I'll put something great here, so stay tuned")
-st.write("Bye)
+st.write("Bye")
 
 with st.sidebar("Applications"):
     st.write("Choose App")
