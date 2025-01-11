@@ -26,5 +26,3 @@ def draw_triangle(a, b, c, triangle_type):
     plt.axis("off")
     plt.show()
     st.pyplot(plt)
-
-explain this with the mathematical formula
