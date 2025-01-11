@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 st.title("Cashier")
-data = pd.read_excel('/pages/dataset_cashier.xlsx')
+data = pd.read_excel('dataset_cashier.xlsx')
 
 if 'transaction' not in st.session_state:
     st.session_state['transaction'] = pd.DataFrame(columns=['description', 'price', 'quantity', 'amount'])
