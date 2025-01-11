@@ -86,38 +86,37 @@ def convert(input_value, category, base_unit, target_unit):
     else:
         return input_value / conversion_factor[category][base_unit] * conversion_factor[category][target_unit]
 
-with st.expander("Converter"):
-    if 'result' not in st.session_state:
-        st.session_state.result = 0.0
-    
-    with st.container():
-        col0, col1, col2, col3, col4 = st.columns(5)
-    
-        with col0:
-            category = st.radio("Category", list(conversion_factor.keys()), key="category")
-    
-        with col1:
-            input_value = st.number_input("Input Value", min_value=0.0, step=0.1, key="input_value")
-    
-        with col2:
-            if category == 'temperature':
-                base_unit = st.radio("From", conversion_factor[category], key="base_unit")
-            else:
-                base_unit = st.radio("From", conversion_factor[category], key="base_unit")
-    
-        with col3:
-            if category == 'temperature':
-                target_unit = st.radio("To", conversion_factor[category], key="target_unit")
-            else:
-                target_unit = st.radio("To", conversion_factor[category], key="target_unit")
-    
-        with col4:
-            st.write("Converted Value")
-            if base_unit and target_unit:
-                st.session_state.result = convert(input_value, category, base_unit, target_unit)
-            if category == 'planet':
-                st.write(f'{target_unit} volume is {st.session_state.result:#,.3f} times of {base_unit}')
-            else:
-                st.write(f'{st.session_state.result:#,.3f} {target_unit}')
-    
-    show_formula(category, base_unit, target_unit)
+if 'result' not in st.session_state:
+    st.session_state.result = 0.0
+
+with st.container():
+    col0, col1, col2, col3, col4 = st.columns(5)
+
+    with col0:
+        category = st.radio("Category", list(conversion_factor.keys()), key="category")
+
+    with col1:
+        input_value = st.number_input("Input Value", min_value=0.0, step=0.1, key="input_value")
+
+    with col2:
+        if category == 'temperature':
+            base_unit = st.radio("From", conversion_factor[category], key="base_unit")
+        else:
+            base_unit = st.radio("From", conversion_factor[category], key="base_unit")
+
+    with col3:
+        if category == 'temperature':
+            target_unit = st.radio("To", conversion_factor[category], key="target_unit")
+        else:
+            target_unit = st.radio("To", conversion_factor[category], key="target_unit")
+
+    with col4:
+        st.write("Converted Value")
+        if base_unit and target_unit:
+            st.session_state.result = convert(input_value, category, base_unit, target_unit)
+        if category == 'planet':
+            st.write(f'{target_unit} volume is {st.session_state.result:#,.3f} times of {base_unit}')
+        else:
+            st.write(f'{st.session_state.result:#,.3f} {target_unit}')
+
+show_formula(category, base_unit, target_unit)
