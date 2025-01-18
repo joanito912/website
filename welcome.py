@@ -1,7 +1,7 @@
 import streamlit as st
 
 with st.sidebar:
-    st.write("Choose App")
+    st.write("Choose Web App")
 
 st.title("Hello This is Andi's Brand New Website")
 st.header("Written with 100% Python codes")
