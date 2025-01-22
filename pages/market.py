@@ -5,6 +5,8 @@ data = pd.read_excel('./pages/source.xlsx')
 
 st.dataframe(data)
 
-criteria1 = data['category'] == 'food'
+#develop search criteria
+criteria1 = data['category'] == 'non food'
 
+#to apply the criteria
 st.dataframe(data[criteria1])
