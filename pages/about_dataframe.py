@@ -10,7 +10,7 @@ mean_price = data['price'].mean()
 
 selected_category = st.multiselect("Select category",options=unique_category)
 selected_store = st.multiselect("Select store",options=unique_storename)
-price_point = st.slider("Price",min_value=minimum_price,max_value=maximum_price,value=mean_price)
+price_point = st.slider("Price",min_value=0,max_value=maximum_price,value=mean_price)
 
 criteria1 = data['category'].isin(selected_category) 
 criteria2 = data['store_name'].isin(selected_store)
