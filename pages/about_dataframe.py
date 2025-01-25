@@ -6,10 +6,10 @@ unique_category = data['category'].unique()
 unique_storename = data['store_name'].unique()
 minimum_price = data['price'].min()
 maximum_price = data['price'].max()
-mean_price = data['price'].mean()
 
-selected_category = st.multiselect("Select category",options=unique_category)
-selected_store = st.multiselect("Select store",options=unique_storename)
+
+selected_category = st.multiselect("Select category",options=unique_category,default=unique_category)
+selected_store = st.multiselect("Select store",options=unique_storename,default=unique_store)
 price_point = st.slider("Price",min_value=minimum_price,max_value=maximum_price,value=maximum_price)
 
 criteria1 = data['category'].isin(selected_category) 
@@ -22,8 +22,9 @@ criteria3 = data['price'] > 12000
 criteria4 = (data['price'] >= 12000) & (data['price'] <= 40000)
 criteria5 = (criteria1) & (criteria2) & (criteria4)
 
-data = data[join_criteria]
+with st.container(border=True):
+  data = data[join_criteria]
+  st.dataframe(data,use_container_width=True)
 
 #print(data[criteria5])
 print(data[criteria2].sort_values('price',ascending=True))
-st.dataframe(data)
