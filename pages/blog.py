@@ -3,7 +3,7 @@ import os
 
 st.title("My blog page")
 
-with open('./article.md','r') as f:
+with open('./blog/article.md','r') as f:
   content = f.read()
 f.close()
 st.markdown('content')
