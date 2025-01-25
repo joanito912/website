@@ -1,6 +1,6 @@
 import pandas as pd
 
-data = pd.read_excel('source.xlsx')
+data = pd.read_excel('./pages/source.xlsx')
 
 criteria1 = data['category'] == 'non food'
 criteria2 = data['store_name'] == 'Alfamart'
