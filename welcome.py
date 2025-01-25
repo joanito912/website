@@ -1,10 +1,6 @@
 import streamlit as st
 
-with st.sidebar:
-    st.write("Choose Web App")
-
-st.title("Hello This is Andi's Brand New Website")
-st.header("Written with 100% Python codes")
+st.header("This website is written with 100% Python codes")
 st.write("Click the button for fun surprise")
 
 if st.button("Snowflake"):
@@ -13,6 +9,4 @@ if st.button("Snowflake"):
 if st.button("Balloon"):
     st.balloons()
     
-st.write("I'll put something great here, so stay tuned")
-st.write("Bye")
-
+st.write("Click the sidebar to find webapp we could make")
