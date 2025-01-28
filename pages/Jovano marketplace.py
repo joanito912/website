@@ -24,7 +24,11 @@ df = df[df['category'] == selected_category ]
 df = df[df['name'] == selected_name ]
 df = df[df['store_name'] == selected_store ]
 
-st.image('./images/blueband.jpeg',width=250)
+for i in range(len(df)):
+    record = df.iloc[i]
+    # st.image(f{},width=250)
+    st.image(f{record['picture']},width=250)
+    # st.image('./images/blueband.jpeg',width=250)
 
 st.dataframe(df)
 
