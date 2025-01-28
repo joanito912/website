@@ -21,14 +21,13 @@ with st.container(border=True):
 
 #create df subset based on certain condition
 df = df[df['category'] == selected_category ]
-df = df[df['name'] == selected_name ]
-df = df[df['store_name'] == selected_store ]
+# df = df[df['name'] == selected_name ]
+# df = df[df['store_name'] == selected_store ]
 
 for i in range(len(df)):
     record = df.iloc[i]
-    # st.image(f{},width=250)
     st.image(f"{record['picture']}",width=250)
-    # st.image('./images/blueband.jpeg',width=250)
+
 
 st.dataframe(df)
 
