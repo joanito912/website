@@ -1,0 +1,31 @@
+import streamlit as st
+import pandas as pd
+
+
+df = pd.read_excel('source.xlsx')
+
+with st.container(border=True):
+    col1,col2,col3 = st.columns(3)
+    
+    with col1:
+        selected_category = st.selectbox("Choose category",
+                                         options=df['category'].unique())
+
+    with col2:
+        selected_name = st.selectbox("Choose name",
+                                         options=df['name'].unique())
+
+    with col3:
+        selected_store = st.selectbox("Choose store",
+                                         options=df['store_name'].unique())
+
+#create df subset based on certain condition
+df = df[df['category'] == selected_category ]
+df = df[df['name'] == selected_name ]
+df = df[df['store_name'] == selected_store ]
+
+st.dataframe(df)
+
+
+
+
