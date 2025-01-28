@@ -24,7 +24,7 @@ df = df[df['category'] == selected_category ]
 df = df[df['name'] == selected_name ]
 df = df[df['store_name'] == selected_store ]
 
-st.image('./images/blueband.jpeg')
+st.image('./images/blueband.jpeg',width=250)
 
 st.dataframe(df)
 
