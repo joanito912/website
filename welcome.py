@@ -5,7 +5,7 @@ st.write("Click the button for fun surprise")
 st.markdown("""
             <style>
                 body {
-                    background-color: lightblue;
+                    background-color: #00d4ff;
                 }
             </style>
             """, unsafe_allow_html=True)
