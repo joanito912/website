@@ -2,6 +2,13 @@ import streamlit as st
 
 st.header("This website is written with 100% Python codes")
 st.write("Click the button for fun surprise")
+st.markdown("""
+            <style>
+                body {
+                    background-color: lightblue;
+                }
+            </style>
+            """, unsafe_allow_html=True)
 
 if st.button("Snowflake"):
     st.snow()
