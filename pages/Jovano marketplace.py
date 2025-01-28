@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 
-df = pd.read_excel('source.xlsx')
+df = pd.read_excel('./pages/source.xlsx')
 
 with st.container(border=True):
     col1,col2,col3 = st.columns(3)
