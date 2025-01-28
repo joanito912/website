@@ -27,7 +27,7 @@ df = df[df['store_name'] == selected_store ]
 for i in range(len(df)):
     record = df.iloc[i]
     # st.image(f{},width=250)
-    st.image(f{record['picture']},width=250)
+    st.image(f"{record['picture']}",width=250)
     # st.image('./images/blueband.jpeg',width=250)
 
 st.dataframe(df)
