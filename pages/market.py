@@ -12,23 +12,15 @@ selected_store = st.multiselect("Select Store",options=store_values,default=stor
 
 minimum_price = data['price'].min() #lowest price
 maximum_price = data['price'].max() #highest price
-median_price = data['price'].median() #the center price
 
 price_range = st.slider("Price range",min_value=minimum_price,max_value=maximum_price)
 
 # develop search criteria
 criteria1 = data['category'].isin(selected_category)
 criteria2 = data['store_name'].isin(selected_store)
-criteria3 = (criteria1) & (criteria2)
+criteria3 = data['price'] <= price_range
 
-criteria4 = data['price'] >= 10000
-criteria5 = data['price'] <= 30000
-criteria6 = (criteria4) & (criteria5)
+join_criteria = (criteria1) & (criteria2) & (criteria3)
 
-#to apply the criteria
-# st.dataframe(data[criteria1])
-# st.dataframe(data[criteria2])
-st.dataframe(data[criteria3])
-# st.dataframe(data[criteria4])
-# st.dataframe(data[criteria5])
-# st.dataframe(data[criteria6])
+# to apply the criteria
+st.dataframe(data[join_criteria])
