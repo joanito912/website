@@ -1,7 +1,10 @@
 import streamlit as st
 import os
 
-with open('./pages/blog/school_agenda.md','r') as f:
-  content = f.read()
-f.close()
-st.markdown(content)
+files = os.listdir('./pages/blog')
+
+for each_file in files:
+    with open('./pages/blog/' + each_file,'r') as f:
+      content = f.read()
+    f.close()
+    st.markdown(content)
