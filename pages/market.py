@@ -10,6 +10,12 @@ selected_category = st.multiselect("Select Category",options=category_values,def
 store_values = data['store_name'].unique()
 selected_store = st.multiselect("Select Store",options=store_values,default=store_values)
 
+minimum_price = data['price'].min() #lowest price
+maximum_price = data['price'].max() #highest price
+median_price = data['price'].median() #the center price
+
+price_range = st.slider("Price range",min_value=minimum_price,max_value=maximum_price,value=median_price)
+
 # develop search criteria
 criteria1 = data['category'].isin(selected_category)
 criteria2 = data['store_name'].isin(selected_store)
