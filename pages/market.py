@@ -14,7 +14,7 @@ minimum_price = data['price'].min() #lowest price
 maximum_price = data['price'].max() #highest price
 median_price = data['price'].median() #the center price
 
-price_range = st.slider("Price range",min_value=minimum_price,max_value=maximum_price,value=median_price)
+price_range = st.slider("Price range",min_value=minimum_price,max_value=maximum_price,value=median_price,step=1)
 
 # develop search criteria
 criteria1 = data['category'].isin(selected_category)
