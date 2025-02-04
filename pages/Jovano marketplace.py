@@ -21,8 +21,8 @@ with st.container(border=True):
 
 #create df subset based on certain condition
 df = df[df['category'] == selected_category ]
-# df = df[df['name'] == selected_name ]
-# df = df[df['store_name'] == selected_store ]
+df = df[df['name'] == selected_name ]
+df = df[df['store_name'] == selected_store ]
 
 num_of_columns = 4 # create variable to set the column
 columns = st.columns(num_of_columns) # create the column
