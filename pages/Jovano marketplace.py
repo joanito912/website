@@ -36,7 +36,7 @@ for i in range(len(df)):
             st.write(f"{record['price']}")
 
 
-st.dataframe(df)
+# st.dataframe(df)
 
 
 
