@@ -24,13 +24,16 @@ df = df[df['category'] == selected_category ]
 # df = df[df['name'] == selected_name ]
 # df = df[df['store_name'] == selected_store ]
 
-num_of_columns = 4
-columns = st.columns(num_of_columns) 
+num_of_columns = 4 # create variable to set the column
+columns = st.columns(num_of_columns) # create the column
 
 for i in range(len(df)):
     record = df.iloc[i]
     with columns[i]:
-        st.image(f"{record['picture']}",width=250)
+        with st.container(border=True):
+            st.image(f"{record['picture']}",width=250)
+            st.write(f"{record['name']}")
+            st.write(f"{record['price']}")
 
 
 st.dataframe(df)
