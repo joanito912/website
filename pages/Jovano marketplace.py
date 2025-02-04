@@ -24,9 +24,13 @@ df = df[df['category'] == selected_category ]
 # df = df[df['name'] == selected_name ]
 # df = df[df['store_name'] == selected_store ]
 
+num_of_columns = 4
+columns = st.columns(num_of_columns) 
+
 for i in range(len(df)):
     record = df.iloc[i]
-    st.image(f"{record['picture']}",width=250)
+    with columns[i]:
+        st.image(f"{record['picture']}",width=250)
 
 
 st.dataframe(df)
