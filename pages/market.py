@@ -26,7 +26,7 @@ join_criteria = (criteria1) & (criteria2) & (criteria3)
 with st.container(border=True):
   st.image('./images/sabun_cuci_piring.jpeg')
 with st.container(border=True):
-st.image('./images/margarin_filma.jpeg')
+  st.image('./images/margarin_filma.jpeg')
 
 
 
