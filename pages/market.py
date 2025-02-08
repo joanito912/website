@@ -35,7 +35,7 @@ with columns[1]:
 
 row_number = len(data) #determine the length of a dataframe
 for i in range(row_number):
-  st.text(data.iloc[i]['picture'])
+  st.image(data.iloc[i]['picture'])
 
 
 # to apply the criteria
