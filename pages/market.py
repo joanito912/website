@@ -33,6 +33,9 @@ with columns[1]:
   with st.container(border=True):
     st.image('./images/margarin_filma.jpeg')
 
+row_number = len(join_criteria) #determine the length of a dataframe
+for i in range(row_number):
+  print(join_creteria.loc[i])
 
 
 # to apply the criteria
