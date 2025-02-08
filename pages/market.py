@@ -35,7 +35,7 @@ with columns[1]:
 
 row_number = len(join_criteria) #determine the length of a dataframe
 for i in range(row_number):
-  print(join_creteria.loc[i])
+  print(join_criteria.loc[i])
 
 
 # to apply the criteria
