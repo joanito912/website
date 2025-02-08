@@ -24,7 +24,7 @@ join_criteria = (criteria1) & (criteria2) & (criteria3)
 
 #display the picture
 st.image('./images/sabun_cuci_piring.jpeg')
-
+st.image('./images/margarin_filma.jpeg')
 
 
 
