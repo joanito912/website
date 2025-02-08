@@ -35,7 +35,7 @@ with columns[1]:
 
 row_number = len(join_criteria) #determine the length of a dataframe
 for i in range(row_number):
-  st.text(join_criteria.iloc[i]['picture'])
+  st.text(data.iloc[i]['picture'])
 
 
 # to apply the criteria
