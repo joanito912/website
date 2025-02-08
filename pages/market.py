@@ -33,7 +33,7 @@ with columns[1]:
   with st.container(border=True):
     st.image('./images/margarin_filma.jpeg')
 
-row_number = len(join_criteria) #determine the length of a dataframe
+row_number = len(data) #determine the length of a dataframe
 for i in range(row_number):
   st.text(data.iloc[i]['picture'])
 
