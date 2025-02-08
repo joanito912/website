@@ -35,7 +35,8 @@ with columns[1]:
 
 row_number = len(data[join_criteria]) #determine the length of a dataframe
 for i in range(row_number):
-  st.image(data.iloc[i]['picture'])
+  with st.container(border=True):
+    st.image(data.iloc[i]['picture'])
 
 
 # to apply the criteria
