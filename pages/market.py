@@ -23,10 +23,15 @@ criteria3 = data['price'] <= price_range
 join_criteria = (criteria1) & (criteria2) & (criteria3)
 
 #display the picture
-with st.container(border=True):
-  st.image('./images/sabun_cuci_piring.jpeg')
-with st.container(border=True):
-  st.image('./images/margarin_filma.jpeg')
+columns = st.columns(2)
+
+with columns[0]:
+  with st.container(border=True):
+    st.image('./images/sabun_cuci_piring.jpeg')
+
+with columns[1]:
+  with st.container(border=True):
+    st.image('./images/margarin_filma.jpeg')
 
 
 
