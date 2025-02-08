@@ -22,5 +22,11 @@ criteria3 = data['price'] <= price_range
 
 join_criteria = (criteria1) & (criteria2) & (criteria3)
 
+#display the picture
+st.image('./images/sabun_cuci_piring.jpeg')
+
+
+
+
 # to apply the criteria
 st.dataframe(data[join_criteria])
