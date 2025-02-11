@@ -42,14 +42,21 @@ elif num_of_rows <= 1:
     num_of_rows = 1
 
 for r in range(num_of_rows):
-    with st.container():
-        for i in range(len(df)):
-            record = df.iloc[i]
-            with columns[i]:
-                with st.container(border=True):
-                    st.image(f"{record['picture']}",width=250)
-                    st.write(f"{record['name']}")
-                    st.write(f"{record['price']}")
+    if r%2 == 0:
+        col = columns[1]
+    elif r%3==0:
+        col = columns[2]
+    elif r%4==:
+        col = columns[3]
+    else:
+        col = columns[0]
+        
+    record = df.iloc[i]
+    with col:
+        with st.container(border=True):
+            st.image(f"{record['picture']}",width=250)
+            st.write(f"{record['name']}")
+            st.write(f"{record['price']}")
     
 
 # st.dataframe(df)
