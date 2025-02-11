@@ -23,9 +23,9 @@ with st.container(border=True):
                                          default=df['store_name'].unique())
 
 #create df subset based on certain condition
-df = df[df['category'].isin(selected_category)
-df = df[df['name'].isin(selected_name)
-df = df[df['store_name'].isin(selected_store)
+df = df[df['category'].isin(selected_category)]
+df = df[df['name'].isin(selected_name)]
+df = df[df['store_name'].isin(selected_store)]
 
 num_of_columns = 4 # create variable to set the column
 columns = st.columns(num_of_columns) # create the column
