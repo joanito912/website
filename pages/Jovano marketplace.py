@@ -51,12 +51,13 @@ for r in range(num_of_rows):
     else:
         col = columns[0]
         
-    record = df.iloc[i]
-    with col:
-        with st.container(border=True):
-            st.image(f"{record['picture']}",width=250)
-            st.write(f"{record['name']}")
-            st.write(f"{record['price']}")
+    for i in range(len(df)):
+        with col:
+            record = df.iloc[i]        
+            with st.container(border=True):
+                st.image(f"{record['picture']}",width=250)
+                st.write(f"{record['name']}")
+                st.write(f"{record['price']}")
     
 
 # st.dataframe(df)
