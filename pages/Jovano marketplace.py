@@ -52,8 +52,9 @@ for r in range(num_of_rows):
         col = columns[0]
         
     for i in range(len(df)):
+
+        record = df.iloc[i]
         with col:
-            record = df.iloc[i]        
             with st.container(border=True):
                 st.image(f"{record['picture']}",width=250)
                 st.write(f"{record['name']}")
