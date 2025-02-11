@@ -46,7 +46,7 @@ for r in range(num_of_rows):
         col = columns[1]
     elif r%3==0:
         col = columns[2]
-    elif r%4==:
+    elif r%4==0:
         col = columns[3]
     else:
         col = columns[0]
