@@ -30,35 +30,18 @@ df = df[df['store_name'].isin(selected_store)]
 num_of_columns = 4 # create variable to set the column
 columns = st.columns(num_of_columns) # create the column
 data_length = len(df)
-num_of_rows = data_length / num_of_columns
-
-if num_of_rows > 3:
-    num_of_rows = 4
-elif num_of_rows > 2 and num_of_rows <= 3:
-    num_of_rows = 3
-elif num_of_rows > 1 and num_of_rows <= 2:
-    num_of_rows = 2
-elif num_of_rows <= 1:
-    num_of_rows = 1
-
-for r in range(num_of_rows):
-    if r%2 == 0:
-        col = columns[1]
-    elif r%3==0:
-        col = columns[2]
-    elif r%4==0:
-        col = columns[3]
-    else:
-        col = columns[0]
-        
-    for i in range(len(df)):
-
-        record = df.iloc[i]
-        with col:
-            with st.container(border=True):
-                st.image(f"{record['picture']}",width=250)
-                st.write(f"{record['name']}")
-                st.write(f"{record['price']}")
+num_of_rows = int(data_length / num_of_columns)
+    
+for nr in range(num_of_rows):
+    with st.container():
+        columns = st.columns(num_of_columns)
+        for nc,c in enumerate(columns):
+            with c:
+                with st.container(border=True):
+                    record = df.iloc[nr * num_of_columns + nc]
+                    st.image(f"{record['picture']}",width=250)
+                    st.write(f"{record['name']}")
+                    st.write(f"{record['price']}")
     
 
 # st.dataframe(df)
