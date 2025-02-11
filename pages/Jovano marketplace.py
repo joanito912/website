@@ -8,16 +8,19 @@ with st.container(border=True):
     col1,col2,col3 = st.columns(3)
     
     with col1:
-        selected_category = st.selectbox("Choose category",
-                                         options=df['category'].unique())
+        selected_category = st.multiselect("Choose category",
+                                           options=df['category'].unique(),
+                                           default=df['category'].unique())
 
     with col2:
-        selected_name = st.selectbox("Choose name",
-                                         options=df['name'].unique())
+        selected_name = st.multiselect("Choose product name",
+                                       options=df['name'].unique(),
+                                       default=df['name'].unique())
 
     with col3:
         selected_store = st.selectbox("Choose store",
-                                         options=df['store_name'].unique())
+                                      options=df['store_name'].unique(),
+                                      default=df['store_name'].unique())
 
 #create df subset based on certain condition
 df = df[df['category'] == selected_category ]
