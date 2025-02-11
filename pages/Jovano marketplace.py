@@ -42,6 +42,8 @@ for nr in range(num_of_rows):
                     st.image(f"{record['picture']}",width=250)
                     st.write(f"{record['name']}")
                     st.write(f"{record['price']}")
+                    if st.button("Add to Cart",key=f'{nr * num_of_columns + nc}'):
+                        st.write("Added to cart")
     
 
 # st.dataframe(df)
