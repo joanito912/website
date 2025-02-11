@@ -30,7 +30,7 @@ df = df[df['store_name'].isin(selected_store)]
 num_of_columns = 4 # create variable to set the column
 columns = st.columns(num_of_columns) # create the column
 data_length = len(df)
-num_of_rows = int(data_length / num_of_columns)
+num_of_rows = int(data_length / num_of_columns) + 1
     
 for nr in range(num_of_rows):
     with st.container():
