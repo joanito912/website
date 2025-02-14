@@ -38,10 +38,10 @@ with col1:
     
             st.download_button("Download", rotated_pdf, file_name="rotated.pdf", mime="application/pdf")
 
-with col2:
-    with st.container(border=True):
-        st.markdown("#### Result Preview")
-        rotated_image = display_pdf_page(rotated_pdf.getvalue())
-        if rotated_image:
-            st.image(rotated_image, caption=f"After {rotation_angle}° Rotation", use_container_width=True)
+            with col2:
+                with st.container(border=True):
+                    st.markdown("#### Result Preview")
+                    rotated_image = display_pdf_page(rotated_pdf.getvalue())
+                    if rotated_image:
+                        st.image(rotated_image, caption=f"After {rotation_angle}° Rotation", use_container_width=True)
     
