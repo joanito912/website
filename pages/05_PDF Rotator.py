@@ -3,6 +3,8 @@ import PyPDF2
 from io import BytesIO
 from pdf2image import convert_from_bytes
 
+st.set_page_config(layout='wide')
+
 def rotate_pdf(file_bytes, rotation_angle):
     pdfReader = PyPDF2.PdfReader(BytesIO(file_bytes))
     pdfWriter = PyPDF2.PdfWriter()
@@ -26,16 +28,19 @@ with col0:
     uploaded_file = st.file_uploader("Upload a PDF", type=["pdf"])
 
 with col1:
-    st.markdown("### Rotation Angle")
-    rotation_angle = st.radio("Rotate PDF by:", [0, 90, 180, 270], index=0)
+    with st.container(border=True):
+        st.markdown("### Angle")
+        rotation_angle = st.radio("Rotate PDF by:", [0, 90, 180, 270], index=0)
     
-    if uploaded_file:
-        file_bytes = uploaded_file.read()        
-        rotated_pdf = rotate_pdf(file_bytes, rotation_angle)
-with col2:
-    st.markdown("#### Result Preview")
-    rotated_image = display_pdf_page(rotated_pdf.getvalue())
-    if rotated_image:
-        st.image(rotated_image, caption=f"After {rotation_angle}° Rotation", use_container_width=True)
+        if uploaded_file:
+            file_bytes = uploaded_file.read()        
+            rotated_pdf = rotate_pdf(file_bytes, rotation_angle)
 
-    st.download_button(f"Download Rotated PDF {rotation_angle} degrees", rotated_pdf, file_name="rotated.pdf", mime="application/pdf")
+with col2:
+    with st.container(border=True, use_container_width=True):
+        st.markdown("#### Result Preview")
+        rotated_image = display_pdf_page(rotated_pdf.getvalue())
+        if rotated_image:
+            st.image(rotated_image, caption=f"After {rotation_angle}° Rotation", use_container_width=True)
+    
+        st.download_button(f"Download Rotated PDF {rotation_angle} degrees", rotated_pdf, file_name="rotated.pdf", mime="application/pdf")
