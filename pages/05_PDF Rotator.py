@@ -20,21 +20,21 @@ def display_pdf_page(file_bytes):
     images = convert_from_bytes(file_bytes, first_page=1, last_page=1)
     return images[0] if images else None
 
-st.title("PDF Rotator")
+st.header("Rotate PDF")
 
 uploaded_file = st.file_uploader("Upload a PDF", type=["pdf"])
 
 if uploaded_file:
     file_bytes = uploaded_file.read()
     
-    st.subheader("Select Rotation Angle")
-    rotation_angle = st.radio("Rotate PDF by:", [0, 90, 180, 270], index=1)
+    st.subheader("Rotation Angle")
+    rotation_angle = st.radio("Rotate PDF by:", [0, 90, 180, 270], index=0)
     
     rotated_pdf = rotate_pdf(file_bytes, rotation_angle)
     
-    st.subheader("Preview After Rotation (First Page)")
+    st.markdown("#### Preview After Rotation (First Page)")
     rotated_image = display_pdf_page(rotated_pdf.getvalue())
     if rotated_image:
         st.image(rotated_image, caption=f"After {rotation_angle}° Rotation", use_container_width=True)
     
-    st.download_button("Download Rotated PDF", rotated_pdf, file_name=f"{uploaded_file}_R{rotation_angle}.pdf", mime="application/pdf")
+    st.download_button(f"Download Rotated PDF {rotation_angle} degrees", rotated_pdf, file_name=f"{uploaded_file}_R{rotation_angle}.pdf", mime="application/pdf")
