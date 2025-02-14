@@ -37,4 +37,4 @@ if uploaded_file:
     if rotated_image:
         st.image(rotated_image, caption=f"After {rotation_angle}° Rotation", use_container_width=True)
     
-    st.download_button(f"Download Rotated PDF {rotation_angle} degrees", rotated_pdf, file_name=f"{uploaded_file}_R{rotation_angle}.pdf", mime="application/pdf")
+    st.download_button(f"Download Rotated PDF {rotation_angle} degrees", rotated_pdf, file_name="rotated.pdf", mime="application/pdf")
