@@ -35,6 +35,6 @@ if uploaded_file:
     st.subheader("Preview After Rotation (First Page)")
     rotated_image = display_pdf_page(rotated_pdf.getvalue())
     if rotated_image:
-        st.image(rotated_image, caption=f"After {rotation_angle}° Rotation", use_column_width=True)
+        st.image(rotated_image, caption=f"After {rotation_angle}° Rotation", use_container_width=True)
     
-    st.download_button("Download Rotated PDF", rotated_pdf, file_name="rotated.pdf", mime="application/pdf")
+    st.download_button("Download Rotated PDF", rotated_pdf, file_name=f"{uploaded_file}_R{rotation_angle}.pdf", mime="application/pdf")
