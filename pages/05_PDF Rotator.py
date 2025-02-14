@@ -37,7 +37,7 @@ with col1:
             rotated_pdf = rotate_pdf(file_bytes, rotation_angle)
 
 with col2:
-    with st.container(border=True, use_container_width=True):
+    with st.container(border=True):
         st.markdown("#### Result Preview")
         rotated_image = display_pdf_page(rotated_pdf.getvalue())
         if rotated_image:
