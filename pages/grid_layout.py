@@ -1,4 +1,5 @@
 import streamlit as st
+st.set_page_config(layout='wide')
 
 st.markdown('### Two methods of grid you may choose, the first method on left, and second on the right column.')
 
@@ -22,7 +23,7 @@ with col2:
 
     columns = st.columns(total_columns)
 
-    for i in range(total_columns):
+    for i in range(data_length):
         if i%total_columns == 0:
             column = columns[i]
             
