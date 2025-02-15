@@ -53,26 +53,38 @@ def filter_data(data):
 
 filtered_data = filter_data(data)
 
-def grid_layout(cols, rows, filtered_data):
+def grid_layout(filtered_data):
     st.header("🏪 Welcome to our Marketplace")
     st.write(f"There are {len(filtered_data)} products listed")
-    for nr in range(rows):
-        with st.container():
-            columns = st.columns(cols)
-            for nc,c in enumerate(columns):
-                with c:
-                    with st.container(border=True):
-                        row_data = filtered_data.iloc[nr * cols + nc]
-                        st.image(f"./images/{row_data['picture']}")
-                        st.write(f"{row_data['product']}")
-                        st.write(f"{row_data['description']}")
-                        st.write(f"**Store:** {row_data['store']}")
-                        st.write(f"**Price:** {row_data['price']}")
-                        if st.button("🛒Cart",key=f"btncart{nr * cols + nc}"):
-                            st.write("Added to Cart")
-                        if st.button("💲Buy",key=f"btnbuy{nr * cols + nc}"):
-                            st.write("Thank you")
-cols = 5
-rows = len(filtered_data) // cols
 
-grid_layout(cols, len(filtered_data) // cols, filtered_data)
+    data_length = len(filtered_data)
+    total_column = st.number_input("Total Columns",value=3,step=1)
+
+    columns = st.columns(total_column)
+
+    for i in range(data_length):
+        for r in range(total_column):
+            if i%total_column == r:
+                column = columns[r]
+            
+                with column:
+                    with st.container(border=True):
+                        product_picture = filtered_data.iloc[i]['picture']
+                        product_name = filtered_data.iloc[i]['product']
+                        product_description = filtered_data.iloc[i]['description']
+                        product_store = filtered_data.iloc[i]['store']
+                        product_price = filtered_data.iloc[i]['price']
+
+                        st.image(product_picture)
+                        st.write(product_name)
+                        st.write(product_description}")
+                        st.write(product_store)
+                        st.write(product_price)
+
+                        if st.button("🛒Cart",key=f'cart{i}'):
+                            st.write("Added to Cart")
+                        if st.button("💲Buy",key=f'buy{i}'):
+                            st.write("Thank you")
+
+grid_layout(filtered_data)
+
