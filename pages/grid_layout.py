@@ -21,8 +21,7 @@ with col1:
                         with column:
                             with st.container(border=True):
                                 st.write(i))
-            '''
-
+            ''')
 
 with col2:
     data_length = st.number_input("Data Length",value=16, step=1)
