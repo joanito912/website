@@ -70,6 +70,7 @@ def grid_layout(filtered_data):
                 with column:
                     with st.container(border=True):
                         product_picture = filtered_data.iloc[i]['picture']
+                        st.write(product_picture)
                         product_name = filtered_data.iloc[i]['product']
                         product_description = filtered_data.iloc[i]['description']
                         product_store = filtered_data.iloc[i]['store']
