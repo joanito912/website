@@ -43,15 +43,26 @@ def main():
             st.session_state.winner = check_winner(st.session_state.board)
             st.session_state.current_player = "O" if st.session_state.current_player == "X" else "X"
     
+    button_style = """
+        <style>
+        div.stButton > button {
+            width: 100px;
+            height: 100px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .red { background-color: red !important; color: white !important; }
+        .blue { background-color: blue !important; color: white !important; }
+        </style>
+    """
+    st.markdown(button_style, unsafe_allow_html=True)
+    
     for row in range(3):
         cols = st.columns(3)
         for col in range(3):
-            cols[col].button(
-                st.session_state.board[row][col] or " ",
-                key=f"{row}-{col}",
-                on_click=make_move,
-                args=(row, col)
-            )
+            value = st.session_state.board[row][col]
+            btn_class = "red" if value == "X" else "blue" if value == "O" else ""
+            cols[col].markdown(f'<button class="{btn_class}" onclick="{make_move(row, col)}">{value or " "}</button>', unsafe_allow_html=True)
     
     if st.session_state.winner:
         if st.session_state.winner == "Draw":
