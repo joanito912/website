@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 st.set_page_config(layout='wide')
-
+st.title("Online Groceries")
 data = pd.read_excel('./pages/source.xlsx')
 # st.dataframe(data)
 column1,column2,column3 = st.columns(3)
