@@ -5,17 +5,20 @@ st.set_page_config(layout='wide')
 
 data = pd.read_excel('./pages/source.xlsx')
 # st.dataframe(data)
+column1,column2,column3 = st.columns(3)
 
-category_values = data['category'].unique()
-selected_category = st.multiselect("Select Category",options=category_values,default=category_values)
+with column1:
+  category_values = data['category'].unique()
+  selected_category = st.multiselect("Select Category",options=category_values,default=category_values)
 
-store_values = data['store_name'].unique()
-selected_store = st.multiselect("Select Store",options=store_values,default=store_values)
+with column2:
+  store_values = data['store_name'].unique()
+  selected_store = st.multiselect("Select Store",options=store_values,default=store_values)
 
-minimum_price = data['price'].min() #lowest price
-maximum_price = data['price'].max() #highest price
-
-price_range = st.slider("Price range",min_value=minimum_price,max_value=maximum_price)
+with column3:
+  minimum_price = data['price'].min() #lowest price
+  maximum_price = data['price'].max() #highest price
+  price_range = st.slider("Price range",min_value=minimum_price,max_value=maximum_price)
 
 # develop search criteria
 criteria1 = data['category'].isin(selected_category)
