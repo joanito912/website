@@ -66,26 +66,25 @@ def grid_layout(filtered_data):
         for r in range(total_column):
             if i%total_column == r:
                 column = columns[r]
-            
-                with column:
-                    with st.container(border=True):
-                        product_picture = filtered_data.iloc[i]['picture']
-                        st.write(product_picture)
-                        product_name = filtered_data.iloc[i]['product']
-                        product_description = filtered_data.iloc[i]['description']
-                        product_store = filtered_data.iloc[i]['store']
-                        product_price = filtered_data.iloc[i]['price']
-
-                        st.image(product_picture)
-                        st.write(product_name)
-                        st.write(product_description)
-                        st.write(product_store)
-                        st.write(product_price)
-
-                        if st.button("🛒Cart",key=f'cart{i}'):
-                            st.write("Added to Cart")
-                        if st.button("💲Buy",key=f'buy{i}'):
-                            st.write("Thank you")
+                with st.container():
+                    with column:
+                        with st.container(border=True):
+                            product_picture = filtered_data.iloc[i]['picture']
+                            product_name = filtered_data.iloc[i]['product']
+                            product_description = filtered_data.iloc[i]['description']
+                            product_store = filtered_data.iloc[i]['store']
+                            product_price = filtered_data.iloc[i]['price']
+    
+                            st.image(product_picture)
+                            st.write(product_name)
+                            st.write(product_description)
+                            st.write(product_store)
+                            st.write(product_price)
+    
+                            if st.button("🛒Cart",key=f'cart{i}'):
+                                st.write("Added to Cart")
+                            if st.button("💲Buy",key=f'buy{i}'):
+                                st.write("Thank you")
 
 grid_layout(filtered_data)
 
