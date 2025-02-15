@@ -19,12 +19,12 @@ join_criteria =  (criteria1) & (criteria2) & (criteria3)
 
 with st.container(border=True):
   data = data[join_criteria]
-
-  product_picture = data.iloc[0]['picture']
-  st.write(product_picture)
-  st.image(product_picture)
-
+  data_count = len(data)
   
+  for i in range(data_count):
+    product_picture = data.iloc[i]['picture']
+    st.image(product_picture,width = 240)  
+    
   st.dataframe(data,use_container_width=True)
 
 
