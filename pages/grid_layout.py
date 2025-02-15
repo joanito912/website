@@ -19,14 +19,14 @@ with col1:
                         st.write(f"container {nr}, column {nc}")
 
 with col2:
-    data_length = st.number_input("Columns",value=16, step=1)
-    total_columns = 4
+    data_length = st.number_input("Data Length",value=16, step=1)
+    total_cols = st.number_input("Columns",value=3,step=1)
 
-    columns = st.columns(total_columns)
+    columns = st.columns(total_cols)
 
     for i in range(data_length):
-        for r in range(total_columns):
-            if i%total_columns == r:
+        for r in range(total_cols):
+            if i%total_cols == r:
                 column = columns[r]
             
                 with column:
