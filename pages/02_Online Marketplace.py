@@ -77,7 +77,7 @@ def grid_layout(filtered_data):
 
                         st.image(product_picture)
                         st.write(product_name)
-                        st.write(product_description}")
+                        st.write(product_description)
                         st.write(product_store)
                         st.write(product_price)
 
