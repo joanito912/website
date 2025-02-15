@@ -58,7 +58,7 @@ def grid_layout(filtered_data):
     st.write(f"There are {len(filtered_data)} products listed")
 
     data_length = len(filtered_data)
-    total_column = st.number_input("Total Columns",value=3,step=1)
+    total_column = st.number_input("Display Columns",value=4,step=1)
 
     columns = st.columns(total_column)
 
