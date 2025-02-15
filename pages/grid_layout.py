@@ -31,6 +31,6 @@ with col2:
             
                 with column:
                     with st.container(border=True):
-                        st.write("Hello")
+                        st.write(f"Data {i+1}")
             
         
