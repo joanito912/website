@@ -43,7 +43,7 @@ for i in range(row_number):
   with col:
     with st.container(border=True):
       st.image(data.iloc[i]['picture'])
-
+      st.write(data.iloc[i]['price'])
 
 # to apply the criteria
 st.dataframe(data[join_criteria])
