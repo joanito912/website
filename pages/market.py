@@ -43,6 +43,7 @@ for i in range(row_number):
   with col:
     with st.container(border=True):
       st.image(data.iloc[i]['picture'])
+      st.write(data.iloc[i]['name'])
       st.write(data.iloc[i]['price'])
       st.write(data.iloc[i]['store_name'])
 
