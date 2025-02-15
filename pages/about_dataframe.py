@@ -21,6 +21,7 @@ with st.container(border=True):
   data = data[join_criteria]
 
   product_picture = data.iloc[0]['picture']
+  st.write(product_picture)
   st.image(product_picture)
 
   
