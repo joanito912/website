@@ -20,7 +20,7 @@ with col1:
                     
                         with column:
                             with st.container(border=True):
-                                st.write(i))
+                                st.write(i+1))
             ''')
 
 with col2:
@@ -36,4 +36,4 @@ with col2:
             
                 with column:
                     with st.container(border=True):
-                        st.write(i)
+                        st.write(i+1)
