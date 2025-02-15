@@ -20,7 +20,7 @@ with col1:
 
 with col2:
     data_length = st.number_input("Data Length",value=16, step=1)
-    total_column = st.number_input("Columns",value=3,step=1)
+    total_column = st.number_input("Total Columns",value=3,step=1)
 
     columns = st.columns(total_column)
 
