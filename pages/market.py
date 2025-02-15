@@ -25,13 +25,13 @@ join_criteria = (criteria1) & (criteria2) & (criteria3)
 #display the picture
 columns = st.columns(2)
 
-with columns[0]:
-  with st.container(border=True):
-    st.image('./images/sabun_cuci_piring.jpeg')
+# with columns[0]:
+#   with st.container(border=True):
+#     st.image('./images/sabun_cuci_piring.jpeg')
 
-with columns[1]:
-  with st.container(border=True):
-    st.image('./images/margarin_filma.jpeg')
+# with columns[1]:
+#   with st.container(border=True):
+#     st.image('./images/margarin_filma.jpeg')
 
 row_number = len(data[join_criteria]) #determine the length of a dataframe
 for i in range(row_number):
@@ -44,6 +44,7 @@ for i in range(row_number):
     with st.container(border=True):
       st.image(data.iloc[i]['picture'])
       st.write(data.iloc[i]['price'])
+      st.write(data.iloc[i]['store_name'])
 
 # to apply the criteria
 st.dataframe(data[join_criteria])
