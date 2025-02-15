@@ -20,13 +20,13 @@ with col1:
 
 with col2:
     data_length = st.number_input("Data Length",value=16, step=1)
-    total_cols = st.number_input("Columns",value=3,step=1)
+    total_column = st.number_input("Columns",value=3,step=1)
 
-    columns = st.columns(total_cols)
+    columns = st.columns(total_column)
 
     for i in range(data_length):
-        for r in range(total_cols):
-            if i%total_cols == r:
+        for r in range(total_column):
+            if i%total_column == r:
                 column = columns[r]
             
                 with column:
