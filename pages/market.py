@@ -46,6 +46,8 @@ for i in range(row_number):
       st.write(data.iloc[i]['name'])
       st.write(data.iloc[i]['price'])
       st.write(data.iloc[i]['store_name'])
+      if st.button("Add to Cart"):
+        st.write("Items added in cart")
 
 # to apply the criteria
 st.dataframe(data[join_criteria])
