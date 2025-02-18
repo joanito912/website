@@ -30,23 +30,29 @@ df = df[df['store_name'].isin(selected_store)]
 num_of_columns = 4 # create variable to set the column
 columns = st.columns(num_of_columns) # create the column
 data_length = len(df)
-num_of_rows = int(data_length / num_of_columns) + 1
-    
-for nr in range(num_of_rows):
-    with st.container():
-        columns = st.columns(num_of_columns)
-        for nc,c in enumerate(columns):
-            with c:
-                with st.container(border=True):
-                    record = df.iloc[nr * num_of_columns + nc]
-                    st.image(f"{record['picture']}",width=250)
-                    st.write(f"{record['name']}")
-                    st.write(f"{record['price']}")
-                    if st.button("Add to Cart",key=f'{nr * num_of_columns + nc}'):
-                        st.write("Added to cart")
-    
+#num_of_rows = int(data_length / num_of_columns) + 1
 
-# st.dataframe(df)
+for i in range(data_length):
+    if i%num_of_columns == 0:
+        col = columns[0]
+    if i%num_of_columns == 1:
+        col = columns[1]
+    if i%num_of_columns == 2:
+        col = columns[2]
+    if i%num_of_columns == 3:
+        col = columns[3]
+
+    with col:
+        with st.container(border=True):
+            record = df.iloc[nr * num_of_columns + nc]
+            st.image(f"{record['picture']}",width=250)
+            st.write(f"{record['name']}")
+            st.write(f"{record['price']}")
+            if st.button("Add to Cart",key=f'cart{i}'):
+                st.write("Added to cart")
+            if st.button("Buy",key=f'buy{i}'):
+                st.write("Thank you")
+    
 
 
 
