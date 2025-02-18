@@ -44,7 +44,7 @@ for i in range(data_length):
 
     with col:
         with st.container(border=True):
-            record = df.iloc[nr * num_of_columns + nc]
+            record = df.iloc[i]
             st.image(f"{record['picture']}",width=250)
             st.write(f"{record['name']}")
             st.write(f"{record['price']}")
