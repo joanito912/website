@@ -9,7 +9,7 @@ conversion_factors = {
   }
 
 #category selection
-category_list = list(conversion_factor.keys())
+category_list = list(conversion_factors.keys())
 category = st.radio("Select category",options=category_list)
 
 
