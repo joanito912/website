@@ -108,7 +108,7 @@ with col_left:
         max_qty = st.number_input("Maximum Quantity", 
                                 min_value=rop, 
                                 max_value=9000, 
-                                value=max_qty_default, 
+                                value=rop*2, 
                                 step=1)
         
     with col2:
