@@ -72,9 +72,7 @@ st.header("Inventory Simulation")
 
 col_left, col_right = st.columns(2)
 
-with col_left:
-    st.subheader("Parameters")
-    
+with col_left:    
     col1, col2 = st.columns(2)
     
     with col1:
@@ -177,7 +175,6 @@ with col_left:
                       f"{daily_usage_avg:.1f} \\times {delivery_lead_time} = {critical_default}")
     order_qty_formula = r"\text{Order Qty} = \max(\text{MOQ}, \lceil\frac{\text{Max Qty} - \text{Inventory}}{\text{Qty per Package}}\rceil \times \text{Qty per Package})"
 
-    st.write("### Calculated Parameter Formulas")
     st.latex(rop_formula)
     st.latex(max_qty_formula)
     st.latex(critical_formula)
@@ -185,7 +182,6 @@ with col_left:
 
 
 with col_right:
-    st.subheader("Inventory Value at 30-Day Intervals")
     interval_data = []
     for day in range(0, sim_days, 30):
         if day < len(df):
