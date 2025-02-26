@@ -103,13 +103,7 @@ with col_left:
                             max_value=9000, 
                             value=rop_default, 
                             step=1)
-        
-        max_qty_default = int(monthly_usage_avg * 2)
-        max_qty = st.number_input("Maximum Quantity", 
-                                min_value=rop, 
-                                max_value=9000, 
-                                value=monthly_usage_avg+beginning_inventory, 
-                                step=1)
+      
         
     with col2:
         beginning_inventory_default = int(monthly_usage_avg)
@@ -118,6 +112,13 @@ with col_left:
                                             max_value=9000, 
                                             value=beginning_inventory_default, 
                                             step=1)
+
+        max_qty_default = int(monthly_usage_avg * 2)
+        max_qty = st.number_input("Maximum Quantity", 
+                                min_value=rop, 
+                                max_value=9000, 
+                                value=monthly_usage_avg+beginning_inventory, 
+                                step=1)
         
         inventory_value = st.number_input("Inventory Value (price per unit)", 
                                         min_value=0.01, 
