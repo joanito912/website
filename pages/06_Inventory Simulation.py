@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 
+st.set_page_config(layout='wide')
+
 def simulate_ddmrp_inventory(rop, max_qty, critical_level, moq, 
                            delivery_lead_time, qty_per_package, monthly_usage_avg, 
                            beginning_inventory, inventory_value, sim_days=90):
