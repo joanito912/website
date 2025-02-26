@@ -138,7 +138,7 @@ with col_left:
                                         max_value=100, 
                                         value=10, 
                                         step=1)
-        
+    with col1:
         sim_days = st.number_input("Simulation Days", 
                                  min_value=30, 
                                  max_value=180, 
