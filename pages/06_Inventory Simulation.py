@@ -171,7 +171,7 @@ with col_right:
 with col_left:
     rop_formula = (r"\text{ROP} = (\text{Daily Usage} \times \text{Lead Time}) + \text{Critical Level} = "
                   f"({daily_usage_avg:.1f} \\times {delivery_lead_time}) + {critical_level} = {rop_default}")
-    max_qty_formula = r"\text{Max Qty} = \text{Monthly Usage Avg} + \text{ROP} = " + f"{monthly_usage_avg} + f{rop} = {max_qty_default}"
+    max_qty_formula = r"\text{Max Qty} = \text{Monthly Usage Avg} + \text{ROP} = " + f"{monthly_usage_avg} + {rop} = {max_qty_default}"
     critical_formula = (r"\text{Critical Level} = \text{Daily Usage} \times \text{Lead Time} = "
                       f"{daily_usage_avg:.1f} \\times {delivery_lead_time} = {critical_default}")
     order_qty_formula = r"\text{Order Qty} = \max(\text{MOQ}, \lceil\frac{\text{Max Qty} - \text{Inventory}}{\text{Qty per Package}}\rceil \times \text{Qty per Package})"
