@@ -3,12 +3,11 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 
-st.set_page_config(layout='wide')
-
-def simulate_inventory(rop, max_qty, critical_level, moq, 
-                           delivery_lead_time, qty_per_package, monthly_usage_avg, sim_days=90):
+def simulate_ddmrp_inventory(rop, max_qty, critical_level, moq, 
+                           delivery_lead_time, qty_per_package, monthly_usage_avg, 
+                           beginning_inventory, inventory_value, sim_days=90):
     daily_avg_use = monthly_usage_avg / 30
-    inventory = max_qty
+    inventory = beginning_inventory
     day_numbers = [1]
     inventory_levels = [inventory]
     pending_orders = []  # (delivery_day, quantity, order_day)
@@ -26,10 +25,11 @@ def simulate_inventory(rop, max_qty, critical_level, moq,
         for delivery_day, qty, order_day in pending_orders[:]:
             if day >= delivery_day:
                 inventory += qty
+                order_amount = qty * inventory_value
                 order_annotations.append({
                     'x': delivery_day,
                     'y': inventory,
-                    'text': f'Order: {int(qty)}',
+                    'text': f'Order: {int(qty)}\n({order_amount:,.0f})',
                     'showarrow': True,
                     'arrowhead': 1,
                     'ax': 20,
@@ -66,13 +66,10 @@ def simulate_inventory(rop, max_qty, critical_level, moq,
 
     return df, avg_cycle, daily_avg_use, order_annotations
 
-# Streamlit App
-st.title("Inventory Simulation")
+st.header("Inventory Simulation")
 
-# Two-column layout
 col_left, col_right = st.columns(2)
 
-# Left column: Number Inputs
 with col_left:
     st.subheader("Parameters")
     
@@ -87,18 +84,18 @@ with col_left:
         
         daily_usage_avg = monthly_usage_avg / 30
         
-        critical_default = int(monthly_usage_avg * 0.1)
-        critical_level = st.number_input("Critical Level", 
-                                       min_value=0, 
-                                       max_value=9000, 
-                                       value=critical_default, 
-                                       step=1)
-        
         delivery_lead_time = st.number_input("Delivery Lead Time (days)", 
                                            min_value=1, 
                                            max_value=60, 
                                            value=7, 
                                            step=1)
+        
+        critical_default = int(daily_usage_avg * delivery_lead_time)  # Updated calculation
+        critical_level = st.number_input("Critical Level", 
+                                       min_value=0, 
+                                       max_value=9000, 
+                                       value=critical_default, 
+                                       step=1)
         
         rop_default = int((daily_usage_avg * delivery_lead_time) + critical_level)
         rop = st.number_input("Re-Order Point (ROP)", 
@@ -115,6 +112,20 @@ with col_left:
                                 step=1)
         
     with col2:
+        beginning_inventory_default = int(monthly_usage_avg)
+        beginning_inventory = st.number_input("Beginning Inventory", 
+                                            min_value=0, 
+                                            max_value=9000, 
+                                            value=beginning_inventory_default, 
+                                            step=1)
+        
+        inventory_value = st.number_input("Inventory Value (price per unit)", 
+                                        min_value=0.01, 
+                                        max_value=1000.00, 
+                                        value=10.00, 
+                                        step=0.01,
+                                        format="%.2f")
+        
         moq = st.number_input("Minimum Order Quantity (MOQ)", 
                             min_value=0, 
                             max_value=500, 
@@ -134,9 +145,10 @@ with col_left:
                                  step=1)
 
 # Run simulation
-df, avg_cycle, daily_avg_use, order_annotations = simulate_inventory(
+df, avg_cycle, daily_avg_use, order_annotations = simulate_ddmrp_inventory(
     rop, max_qty, critical_level, moq, 
-    delivery_lead_time, qty_per_package, monthly_usage_avg, sim_days
+    delivery_lead_time, qty_per_package, monthly_usage_avg, 
+    beginning_inventory, inventory_value, sim_days
 )
 
 # Right column: Chart and Results
@@ -144,7 +156,7 @@ with col_right:
     fig = px.line(df, x='Day', y=['Inventory', 'ROP', 'Max_Qty', 'Critical_Level'],
                  title='Inventory Simulation')
     fig.update_layout(
-        yaxis_title="Inventory Level",
+        yaxis_title="Inventory Qty",
         legend_title="Metrics",
         xaxis_title="Day Number",
         yaxis=dict(range=[0, max(max_qty, df['Inventory'].max()) * 1.1]),
@@ -152,25 +164,36 @@ with col_right:
         annotations=order_annotations
     )
     st.plotly_chart(fig, use_container_width=True)
-    
-    if avg_cycle:
-        st.write(f"Average Order Cycle: {avg_cycle:.1f} days")
-    else:
-        pass
-    
+        
     st.write(f"Daily Average Use: {daily_avg_use:.1f} units")
 
-# Display parameter summary with formulas
-st.subheader("Simulation Parameters")
+with col_left:
+    rop_formula = (r"\text{ROP} = (\text{Daily Usage} \times \text{Lead Time}) + \text{Critical Level} = "
+                  f"({daily_usage_avg:.1f} \\times {delivery_lead_time}) + {critical_level} = {rop_default}")
+    max_qty_formula = r"\text{Max Qty} = \text{Monthly Usage Avg} \times 2 = " + f"{monthly_usage_avg} \\times 2 = {max_qty_default}"
+    critical_formula = (r"\text{Critical Level} = \text{Daily Usage} \times \text{Lead Time} = "
+                      f"{daily_usage_avg:.1f} \\times {delivery_lead_time} = {critical_default}")
+    order_qty_formula = r"\text{Order Qty} = \max(\text{MOQ}, \lceil\frac{\text{Max Qty} - \text{Inventory}}{\text{Qty per Package}}\rceil \times \text{Qty per Package})"
 
-rop_formula = (r"\text{ROP} = (\text{Daily Usage} \times \text{Lead Time}) + \text{Critical Level} = "
-              f"({daily_usage_avg:.1f} \\times {delivery_lead_time}) + {critical_level} = {rop_default}")
-max_qty_formula = r"\text{Max Qty} = \text{Monthly Usage Avg} \times 2 = " + f"{monthly_usage_avg} \\times 2 = {max_qty_default}"
-critical_formula = r"\text{Critical Level} = \text{Monthly Usage Avg} \times 0.1 = " + f"{monthly_usage_avg} \\times 0.1 = {critical_default}"
-order_qty_formula = r"\text{Order Qty} = \max(\text{MOQ}, \lceil\frac{\text{Max Qty} - \text{Inventory}}{\text{Qty per Package}}\rceil \times \text{Qty per Package})"
+    st.write("### Calculated Parameter Formulas")
+    st.latex(rop_formula)
+    st.latex(max_qty_formula)
+    st.latex(critical_formula)
+    st.latex(order_qty_formula)
 
-st.write("### Calculated Parameter Formulas")
-st.latex(rop_formula)
-st.latex(max_qty_formula)
-st.latex(critical_formula)
-st.latex(order_qty_formula)
+
+with col_right:
+    st.subheader("Inventory Value at 30-Day Intervals")
+    interval_data = []
+    for day in range(0, sim_days, 30):
+        if day < len(df):
+            qty = df.loc[df['Day'] == day + 1, 'Inventory'].values[0]
+            value = qty * inventory_value
+            interval_data.append({
+                'Day': day + 1,
+                'Inventory Quantity': f"{qty:,.0f}",
+                'Inventory Value': f"{value:,.0f}"
+            })
+
+    interval_df = pd.DataFrame(interval_data)
+    st.table(interval_df)
