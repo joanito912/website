@@ -117,7 +117,7 @@ with col_left:
         max_qty = st.number_input("Maximum Quantity", 
                                 min_value=rop, 
                                 max_value=9000, 
-                                value=monthly_usage_avg+beginning_inventory, 
+                                value=monthly_usage_avg+rop, 
                                 step=1)
         
         inventory_value = st.number_input("Inventory Value (price per unit)", 
