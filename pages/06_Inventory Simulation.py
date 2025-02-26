@@ -77,7 +77,7 @@ with col_left:
     
     with col1:
         monthly_usage_avg = st.number_input("Monthly Usage Average", 
-                                          min_value=100, 
+                                          min_value=10, 
                                           max_value=9000, 
                                           value=900, 
                                           step=1)
@@ -86,7 +86,7 @@ with col_left:
         
         delivery_lead_time = st.number_input("Delivery Lead Time (days)", 
                                            min_value=1, 
-                                           max_value=60, 
+                                           max_value=120, 
                                            value=7, 
                                            step=1)
         
