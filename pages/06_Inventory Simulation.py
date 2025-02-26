@@ -108,7 +108,7 @@ with col_left:
         max_qty = st.number_input("Maximum Quantity", 
                                 min_value=rop, 
                                 max_value=9000, 
-                                value=rop*2, 
+                                value=monthly_usage_avg+beginning_inventory, 
                                 step=1)
         
     with col2:
