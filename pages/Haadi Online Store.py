@@ -27,27 +27,22 @@ criteria3 = data['price'] <= price_range
 
 join_criteria = (criteria1) & (criteria2) & (criteria3)
 
-#display the picture
-columns = st.columns(4)
+ncolumns = st.number_input("Column Configuration",min_value = 1, value=4,step=1)
+columns = st.columns(ncolumns)
 
-row_number = len(data[join_criteria]) #determine the length of a dataframe
-for i in range(row_number):
-  if i%4==0: #for even number
-    col = columns[0]
-  elif i%4==1: 
-    col = columns[1]
-  elif i%4==2:
-    col = columns[2]
-  else:
-    col = columns[3]
+data_length = len(data[join_criteria]) #determine the length of a dataframe
 
-  with col:
-    with st.container(border=True):
-      st.image(data.iloc[i]['picture'])
-      st.write(data.iloc[i]['name'])
-      st.write(data.iloc[i]['price'])
-      st.write(data.iloc[i]['store_name'])
-      if st.button("Add to Cart", key= str(i)):
-        st.write("Items added in cart")
-      if st.button("Buy Now", key= "a"+str(i)):
-        st.write("Items added in cart")
+for i in range(data_length): # i value starts from 0, 1, ... end of the dataframe
+    for c in range(ncolumns): #c value starts from 0, 1, 2, 3
+      if i%ncolumns == c:
+        col = columns[c]
+        with col:
+            with st.container(border=True):
+              st.image(data.iloc[i]['picture'])
+              st.write(data.iloc[i]['name'])
+              st.write(data.iloc[i]['price'])
+              st.write(data.iloc[i]['store_name'])
+              if st.button("Add to Cart", key= str(i)):
+                st.write("Items added in cart")
+              if st.button("Buy Now", key= "a"+str(i)):
+                st.write("Items added in cart")
