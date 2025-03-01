@@ -33,14 +33,14 @@ conversion_factors = {
             'blue whale':None,
             'brontosaurus':None,
             't-rex':None},
-  'time':{'seconds':1/(4*7*24*60*60),
-          'minutes':1/(4*7*24*60),
-          'hour':1/(4*7*24),
-          'day':1/(4*7),
-          'week':1/4,
-          'month':1/1,
-          'year':1/12,
-          'cat year':1/(365)*7,
+  'time':{'seconds':1/(1/3600),
+          'minutes':1/(1/60),
+          'hour':1,
+          'day':1/24,
+          'week':1/(24*7),
+          'month':(1/(24*7*4))+4,
+          'year':1/(24*7*52),
+          'cat year':1/(24*7*52)*7,
           'dog year':None}}
 
 col1,col2,col3,col4,col5 = st.columns(5)
