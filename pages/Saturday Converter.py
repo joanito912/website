@@ -23,6 +23,9 @@ with col1:
     category_list = list(conversion_factors.keys())
     category = st.radio("Select category",options=category_list)
 
+with col2:
+    input_number = st.number_input("Input",min_value=1,value=1)
+    
 with col3:
     base_unit_list = list(conversion_factors[category].keys())
     base_unit = st.radio("From:",options=base_unit_list)
@@ -31,3 +34,5 @@ with col4:
     target_unit_list = list(conversion_factors[category].keys())
     target_unit = st.radio("To:",options=target_unit_list)
 
+with col5:
+    
