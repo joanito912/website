@@ -4,6 +4,15 @@ conversion_factors = {
   'distance':{'mm':1,
               'cm':0.1,
               'm' :0.01},
+  'calories': {'fries':319,
+               'donut':190,
+               'burger':290,
+               'ice cream':207,
+               'apple':52.1,
+               'banana':88.7,
+               'cabbage':24.6,
+               'coke':139,
+               'milk':42.3},
   'weight':None,
   'time':None
   }
