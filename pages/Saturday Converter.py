@@ -38,7 +38,7 @@ conversion_factors = {
           'hour':1,
           'day':1/24,
           'week':1/(24*7),
-          'month':(1/(24*7*4))+4,
+          'month':1/(24*7*4)+4,
           'year':1/(24*7*52),
           'cat year':1/(24*7*52)*7,
           'dog year':None}}
