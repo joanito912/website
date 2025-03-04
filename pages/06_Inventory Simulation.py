@@ -84,13 +84,15 @@ with col_left:
         
         daily_usage_avg = monthly_usage_avg / 30
         
-        delivery_lead_time = st.number_input("Delivery Lead Time (days)", 
+        delivery_lead_time = st.number_input("PR Release - ETA Lead Time (days)", 
                                            min_value=1, 
                                            max_value=120, 
                                            value=7, 
                                            step=1)
         
         critical_default = int(daily_usage_avg * delivery_lead_time)  # Updated calculation
+        if st.toggle("Run to zero"):
+          critical_default = 0
         critical_level = st.number_input("Critical Level", 
                                        min_value=0, 
                                        max_value=9000, 
