@@ -145,7 +145,7 @@ with col_left:
     with col1:
       sim_days = st.number_input("Simulation Days", 
                                    min_value=30, 
-                                   max_value=180, 
+                                   max_value=365, 
                                    value=90, 
                                    step=1)
 
