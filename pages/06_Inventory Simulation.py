@@ -125,9 +125,9 @@ with col_left:
                                 step=1)
         
         inventory_value = st.number_input("Inventory Value (price per unit)", 
-                                        min_value=0.01, 
-                                        max_value=1000.00, 
-                                        value=10.00, 
+                                        min_value=1, 
+                                        max_value=500000.00, 
+                                        value=1.00, 
                                         step=0.01,
                                         format="%.2f")
 
