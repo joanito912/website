@@ -124,7 +124,7 @@ with col_left:
                                 value=max_qty_default, 
                                 step=1)
         
-        inventory_value = st.number_input("Inventory Value (price per unit)", 
+        inventory_value = st.number_input("Material price per UoM", 
                                         min_value=0.01, 
                                         max_value=500000.00, 
                                         value=1.00, 
