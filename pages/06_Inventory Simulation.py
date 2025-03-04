@@ -116,10 +116,12 @@ with col_left:
                                             step=1)
 
         max_qty_default = int(monthly_usage_avg + rop)
+        if st.toggle("Half Monthly Usage"):
+          max_qty_default = int((0.5*monthly_usage_avg) + rop)
         max_qty = st.number_input("Maximum Quantity", 
                                 min_value=rop, 
                                 max_value=9000, 
-                                value=monthly_usage_avg+rop, 
+                                value=max_qty_default, 
                                 step=1)
         
         inventory_value = st.number_input("Inventory Value (price per unit)", 
@@ -128,24 +130,24 @@ with col_left:
                                         value=10.00, 
                                         step=0.01,
                                         format="%.2f")
-        
-        moq = st.number_input("Minimum Order Quantity (MOQ)", 
-                            min_value=0, 
-                            max_value=500, 
-                            value=50, 
-                            step=1)
-        
+
         qty_per_package = st.number_input("Quantity per Package", 
                                         min_value=1, 
                                         max_value=100, 
-                                        value=10, 
+                                        value=1, 
                                         step=1)
+        moq = st.number_input("Minimum Order Quantity (MOQ)", 
+                            min_value=0, 
+                            max_value=500, 
+                            value=qty_per_package, 
+                            step=1)
+        
     with col1:
-        sim_days = st.number_input("Simulation Days", 
-                                 min_value=30, 
-                                 max_value=180, 
-                                 value=90, 
-                                 step=1)
+      sim_days = st.number_input("Simulation Days", 
+                                   min_value=30, 
+                                   max_value=180, 
+                                   value=90, 
+                                   step=1)
 
 # Run simulation
 df, avg_cycle, daily_avg_use, order_annotations = simulate_ddmrp_inventory(
