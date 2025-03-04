@@ -109,7 +109,7 @@ with col_left:
         
     with col2:
         beginning_inventory_default = int(monthly_usage_avg)
-        beginning_inventory = st.number_input("Beginning Inventory", 
+        beginning_inventory = st.number_input("Inventory Quantity", 
                                             min_value=0, 
                                             max_value=9000, 
                                             value=beginning_inventory_default, 
