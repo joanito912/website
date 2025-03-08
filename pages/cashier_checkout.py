@@ -7,7 +7,8 @@ dummy_data = {'description':['blueband','bread','egg'],
               'price':[12000,18000,15000],
               'quantity':[1,2,3]}
 
-dummy_data['amount'] = dummy_data['price'] * dummy_data['quantity']
+df = pd.DataFrame(dummy_data)
+df['amount'] = df['price'] * df['quantity']
 
 leftcolumn,rightcolumn = st.columns(2)
 
@@ -15,7 +16,7 @@ with leftcolumn:
     pass
     with st.container(border=True):
         st.write("Check-out items:")
-        st.dataframe(dummy_data)
+        st.dataframe(df)
         
 
     with st.container(border=True):
