@@ -21,7 +21,7 @@ with leftcolumn:
     with st.container(border=True):
         st.write("Total:")
         total_amount = df['amount'].sum()
-        st.write(total_amount)
+        st.write(f'{total_amount}')
 
     with st.container(border=True):
         st.write("Payment:")
