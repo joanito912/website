@@ -7,9 +7,9 @@ leftcolumn,rightcolumn = st.columns(2)
 with leftcolumn:
     pass
     with st.container(border=True):
-        pass
+        st.write("Left")
 
 with rightcolumn:
     pass
     with st.container(border=True):
-        pass
+        st.write("Right")
