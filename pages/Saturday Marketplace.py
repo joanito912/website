@@ -23,7 +23,17 @@ with st.container(border=True):
   
   for i in range(data_count):
     product_picture = data.iloc[i]['picture']
-    st.image(product_picture,width = 240)  
+    st.image(product_picture,width = 240)
+    
+    btnc1,btnc2 = st.columns(2)
+    with st.container():
+        with btnc1:
+            if st.button("Buy now",key=str(i)):
+                st.write("OK Thank you")
+        with btnc2:
+            if st.button("Add to cart",key=str(i)+"a"):
+                st.write("Added to Cart")
+    
     
   st.dataframe(data,use_container_width=True)
 
