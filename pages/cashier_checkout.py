@@ -18,9 +18,10 @@ with leftcolumn:
         st.write("Check-out items:")
         st.dataframe(df)
         
-
     with st.container(border=True):
         st.write("Total:")
+        total_amount = df['amount'].sum()
+        st.write(total_amount)
 
     with st.container(border=True):
         st.write("Payment:")
