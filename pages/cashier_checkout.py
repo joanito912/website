@@ -25,6 +25,7 @@ with leftcolumn:
 
     with st.container(border=True):
         st.write("Payment:")
+        payment_received = st.number_input("Enter payment amount",min_value=0,step=1)
 
     with st.container(border=True):
         st.write("Return:")
