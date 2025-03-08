@@ -1,0 +1,1 @@
+Computer is a machine that computes number.
