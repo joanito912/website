@@ -2,6 +2,7 @@ import streamlit as st
 import os
 
 files = os.listdir('./pages/blog')
+st.write(files)
 
 for each_file in files:
     with st.container(border=True):

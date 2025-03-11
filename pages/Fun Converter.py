@@ -43,6 +43,17 @@ conversion_factors = {
           'cat year':1/(24*365*5),
           'dog year':None}}
 
+picture_link = {'fries':'./images/fries.jpeg',
+                'donut':'./images/donut.jpeg',
+                'burger':'./images/burger.jpeg',
+                'ice cream':'./images/ice_cream.jpeg',
+                'apple':'./images/apple.jpeg',
+                'banana':'./images/banana.jpeg',
+                'cabbage':'./images/cabbage.jpeg',
+                'coke':'./images/coke.jpeg',
+                'milk':'./images/milk.jpeg',
+                'instant noodles':'./images/instant_noodles.jpeg'}
+
 col1,col2,col3,col4,col5 = st.columns(5)
 
 with col1:
@@ -57,11 +68,13 @@ with col3:
     base_unit_list = list(conversion_factors[category].keys())
     base_unit = st.radio("From:",options=base_unit_list)
     base_cf = conversion_factors[category][base_unit]
+    st.image(picture_link[base_unit])
 
 with col4:
     target_unit_list = list(conversion_factors[category].keys())
     target_unit = st.radio("To:",options=target_unit_list)
     target_cf = conversion_factors[category][target_unit]
+    st.image(picture_link[target_unit])
 
 with col5:
     st.write("Output:")
