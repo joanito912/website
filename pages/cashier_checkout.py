@@ -30,7 +30,7 @@ with leftcolumn:
         
     with st.container(border=True):
         st.write("Return:")
-        return_amount = payment_recevied - total_amount
+        return_amount = payment_received - total_amount
 
 with rightcolumn:
     pass
