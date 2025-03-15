@@ -13,6 +13,7 @@ df['amount'] = df['price'] * df['quantity']
 def printreceipt():
     content = f'My Shop\n'
     content += f'-----------\n'
+    content += f'-----------\n'
     
     return content
 
