@@ -10,6 +10,9 @@ dummy_data = {'description':['blueband','bread','egg'],
 df = pd.DataFrame(dummy_data)
 df['amount'] = df['price'] * df['quantity']
 
+def printreceipt():
+    pass
+
 leftcolumn,rightcolumn = st.columns(2)
 
 with leftcolumn:
@@ -31,6 +34,13 @@ with leftcolumn:
         st.write("Return:")
         return_amount = payment_received - total_amount
         st.write(f'{return_amount}')
+        
+    with st.container():
+        if st.button("Print receipt"):
+            if return_amount >= 0:
+                printreceipt():
+            else:
+                st.warning("Invalid Amount","Payment must be more or equal than the total purchase") 
         
 with rightcolumn:
     pass
