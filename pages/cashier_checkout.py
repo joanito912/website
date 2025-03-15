@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import datetime
 
 st.set_page_config(layout='wide')
 
@@ -11,11 +12,39 @@ df = pd.DataFrame(dummy_data)
 df['amount'] = df['price'] * df['quantity']
 
 def printreceipt():
-    content = f'My Shop\n'
-    content += f'Receipt----\n'
-    content += f'-----------\n'
+    receipt_text_width = 24
+
+    current_time = datetime.datetime.now() #-> the output is tuple e.g. (2025,02,15,6,8,2,54,543)
+    current_time_str = current_time.strftime("%d.%m.%Y %H:%M:%S") #https://strftime.org/
     
-    return content
+    content = f'My Online Shop\n'
+    content += f'Purchase Receipt\n'
+    content += f'{current_time_str}\n'
+    content += f'------------------------\n'
+    
+    for i in range(len(df)):
+        quantity = df.iloc[i]['quantity']
+        description = df.iloc[i]['description']
+        amount = df.iloc[i]['amount']
+        
+        qty_desc = f'{quantity}x {description}'
+        amount = f'{amount}'
+        
+        white_space = " " * (receipt_text_width - (len(qty_desc) + len(amount))) 
+        
+        content += f'{qty_desc}{white_space}{amount}\n'
+
+    content += f'------------------------\n'
+    content += f'Total  : {total_amount}\n'
+    content += f'Payment: {payment_received}\n'
+    content += f'Return : {return_amount}\n'
+    content += f'------------------------\n'
+    content += f'Thank you for shopping'
+    with rightcolumn:
+        st.code(content)
+
+
+
 
 leftcolumn,rightcolumn = st.columns(2)
 
@@ -46,10 +75,5 @@ with leftcolumn:
             else:
                 st.warning("Payment must be more or equal than the total purchase") 
         
-with rightcolumn:
-    pass
-    with st.container(border=True):
-        c = printreceipt()
-        st.write(c)
         
         
