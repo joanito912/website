@@ -14,7 +14,7 @@ df['amount'] = df['price'] * df['quantity']
 def printreceipt():
     receipt_text_width = 24
 
-    current_time = datetime.datetime.now() #-> the output is tuple e.g. (2025,02,15,6,8,2,54,543)
+    current_time = datetime.datetime.now()
     current_time_str = current_time.strftime("%d.%m.%Y %H:%M:%S") #https://strftime.org/
     
     content = f'My Online Shop\n'
@@ -42,9 +42,7 @@ def printreceipt():
     content += f'Thank you for shopping'
     with rightcolumn:
         st.code(content)
-
-
-
+        st.download_button("Download",content)
 
 leftcolumn,rightcolumn = st.columns(2)
 
@@ -74,6 +72,3 @@ with leftcolumn:
                 printreceipt()
             else:
                 st.warning("Payment must be more or equal than the total purchase") 
-        
-        
-        
