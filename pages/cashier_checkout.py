@@ -26,9 +26,11 @@ with leftcolumn:
     with st.container(border=True):
         st.write("Payment:")
         payment_received = st.number_input("Enter payment amount",min_value=0,step=1)
-
+        st.write(f'{payment_received}')
+        
     with st.container(border=True):
         st.write("Return:")
+        return_amount = payment_recevied - total_amount
 
 with rightcolumn:
     pass
