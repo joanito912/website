@@ -40,7 +40,7 @@ with leftcolumn:
             if return_amount >= 0:
                 printreceipt()
             else:
-                st.warning("Invalid Amount","Payment must be more or equal than the total purchase") 
+                st.warning("Payment must be more or equal than the total purchase") 
         
 with rightcolumn:
     pass
