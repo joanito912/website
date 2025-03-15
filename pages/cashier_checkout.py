@@ -11,7 +11,10 @@ df = pd.DataFrame(dummy_data)
 df['amount'] = df['price'] * df['quantity']
 
 def printreceipt():
-    pass
+    content = f'My Shop\n'
+    content += f'-----------\n'
+    
+    return content
 
 leftcolumn,rightcolumn = st.columns(2)
 
@@ -45,4 +48,7 @@ with leftcolumn:
 with rightcolumn:
     pass
     with st.container(border=True):
-        st.write("Right")
+        content = printreceipt()
+        st.write(content)
+        
+        
