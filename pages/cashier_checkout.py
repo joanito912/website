@@ -12,7 +12,7 @@ df['amount'] = df['price'] * df['quantity']
 
 def printreceipt():
     content = f'My Shop\n'
-    content += f'-----------\n'
+    content += f'Receipt----\n'
     content += f'-----------\n'
     
     return content
@@ -49,7 +49,7 @@ with leftcolumn:
 with rightcolumn:
     pass
     with st.container(border=True):
-        content = printreceipt()
-        st.write(content)
+        c = printreceipt()
+        st.write(c)
         
         
