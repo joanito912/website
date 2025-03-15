@@ -38,7 +38,7 @@ with leftcolumn:
     with st.container():
         if st.button("Print receipt"):
             if return_amount >= 0:
-                printreceipt():
+                printreceipt()
             else:
                 st.warning("Invalid Amount","Payment must be more or equal than the total purchase") 
         
