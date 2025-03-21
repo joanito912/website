@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
+from datetime import datetime, timedelta
 
 st.set_page_config(layout='wide')
 
@@ -151,6 +152,7 @@ with col_left:
 
 # Right column: Chart and Results
 with col_right:
+
     start_day = st.slider("Simulation Start Day", 
                          min_value=1, 
                          max_value=30, 
@@ -166,6 +168,11 @@ with col_right:
         beginning_inventory, inventory_value, sim_days, start_day
     )
     
+    # Adjust annotations for calendar dates if needed
+    if use_calendar:
+        for ann in order_annotations:
+            ann['x'] = df.loc[df['Day'] == ann['x'], 'Date'].iloc[0]
+
     # Choose x-axis based on toggle
     x_axis = 'Date' if use_calendar else 'Day'
     x_title = "Date" if use_calendar else "Day Number"
