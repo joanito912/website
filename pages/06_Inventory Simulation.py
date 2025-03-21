@@ -152,7 +152,7 @@ with col_left:
 
 # Right column: Chart and Results
 with col_right:
-  start_day = st.slider("Simulation Start Day", 
+    start_day = st.slider("Simulation Start Day", 
                          min_value=1, 
                          max_value=30, 
                          value=1, 
