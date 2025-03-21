@@ -152,14 +152,11 @@ with col_left:
 
 # Right column: Chart and Results
 with col_right:
-
-    start_day = st.slider("Simulation Start Day", 
+  start_day = st.slider("Simulation Start Day", 
                          min_value=1, 
                          max_value=30, 
                          value=1, 
                          step=1)
-    
-    use_calendar = st.toggle("Use Calendar Dates", value=False)
 
     # Run simulation with start_day parameter
     df, avg_cycle, daily_avg_use, order_annotations = simulate_ddmrp_inventory(
@@ -168,58 +165,19 @@ with col_right:
         beginning_inventory, inventory_value, sim_days, start_day
     )
     
-    # Adjust annotations for calendar dates if needed
-    if use_calendar:
-        for ann in order_annotations:
-            ann['x'] = df.loc[df['Day'] == ann['x'], 'Date'].iloc[0]
-
-    # Choose x-axis based on toggle
-    x_axis = 'Date' if use_calendar else 'Day'
-    x_title = "Date" if use_calendar else "Day Number"
-    date_format = "%d-%b-%Y" if use_calendar else None
-    
-    fig = px.line(df, x=x_axis, y=['Inventory', 'ROP', 'Max_Qty', 'Critical_Level'],
-                 title=f'Inventory Simulation (Starting {"Date" if use_calendar else "Day"} {df[x_axis].iloc[0].strftime(date_format) if use_calendar else start_day})')
+    fig = px.line(df, x='Day', y=['Inventory', 'ROP', 'Max_Qty', 'Critical_Level'],
+                 title=f'Inventory Simulation (Starting Day {start_day})')
     fig.update_layout(
         yaxis_title="Inventory Qty",
         legend_title="Metrics",
-        xaxis_title=x_title,
+        xaxis_title="Day Number",
         yaxis=dict(range=[0, max(max_qty, df['Inventory'].max()) * 1.1]),
-        xaxis=dict(
-            range=[df[x_axis].iloc[0], df[x_axis].iloc[-1]],
-            tickformat=date_format
-        ),
+        xaxis=dict(range=[start_day, sim_days + start_day - 1]),
         annotations=order_annotations
     )
     st.plotly_chart(fig, use_container_width=True)
         
     st.write(f"Daily Average Use: {daily_avg_use:.1f} units")
-  # start_day = st.slider("Simulation Start Day", 
-    #                      min_value=1, 
-    #                      max_value=30, 
-    #                      value=1, 
-    #                      step=1)
-
-    # # Run simulation with start_day parameter
-    # df, avg_cycle, daily_avg_use, order_annotations = simulate_ddmrp_inventory(
-    #     rop, max_qty, critical_level, moq, 
-    #     delivery_lead_time, qty_per_package, monthly_usage_avg, 
-    #     beginning_inventory, inventory_value, sim_days, start_day
-    # )
-    
-    # fig = px.line(df, x='Day', y=['Inventory', 'ROP', 'Max_Qty', 'Critical_Level'],
-    #              title=f'Inventory Simulation (Starting Day {start_day})')
-    # fig.update_layout(
-    #     yaxis_title="Inventory Qty",
-    #     legend_title="Metrics",
-    #     xaxis_title="Day Number",
-    #     yaxis=dict(range=[0, max(max_qty, df['Inventory'].max()) * 1.1]),
-    #     xaxis=dict(range=[start_day, sim_days + start_day - 1]),
-    #     annotations=order_annotations
-    # )
-    # st.plotly_chart(fig, use_container_width=True)
-        
-    # st.write(f"Daily Average Use: {daily_avg_use:.1f} units")
 
 with col_left:
     rop_formula = (r"\text{ROP} = (\text{Daily Usage} \times \text{Lead Time}) + \text{Critical Level} = "
