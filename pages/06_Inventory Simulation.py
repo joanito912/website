@@ -193,13 +193,14 @@ with col_left:
 
 with col_right:
     interval_data = []
-    for day in range(0, sim_days, 30):
-        adjusted_day = day + start_day
-        if adjusted_day < len(df):
-            qty = df.loc[df['Day'] == adjusted_day, 'Inventory'].values[0]
+    target_days = [30, 60, 90]  # Fixed days for the table
+    for day in target_days:
+        adjusted_day = day + start_day - 1  # Adjust based on start_day
+        if adjusted_day <= sim_days + start_day - 1:  # Check if day is within simulation range
+            qty = df.loc[df['Day'] == adjusted_day, 'Inventory'].values[0] if adjusted_day in df['Day'].values else 0
             value = qty * inventory_value
             interval_data.append({
-                'Day': adjusted_day,
+                'Day': day,
                 'Inventory Quantity': f"{qty:,.0f}",
                 'Inventory Value': f"{value:,.0f}"
             })
