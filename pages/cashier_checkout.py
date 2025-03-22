@@ -30,9 +30,9 @@ def printreceipt():
         qty_desc = f'{description} x{quantity}'
         amount = f'{amount}'
         
-        #white_space = " " * (receipt_text_width - (len(qty_desc) + len(amount))) 
+        white_space = " " * (receipt_text_width - (len(qty_desc) + len(amount))) 
         
-        content += f'{qty_desc} {amount}\n'
+        content += f'{qty_desc}{white_space}{amount}\n'
 
     content += f'------------------------\n'
     content += f'Total  : {total_amount}\n'
@@ -40,6 +40,7 @@ def printreceipt():
     content += f'Return : {return_amount}\n'
     content += f'------------------------\n'
     content += f'Thank you for shopping'
+    
     with rightcolumn:
         st.code(content)
         st.download_button("Download",content)
