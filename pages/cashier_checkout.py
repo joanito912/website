@@ -15,7 +15,7 @@ def printreceipt():
     receipt_text_width = 24
 
     current_time = datetime.datetime.now()
-    current_time_str = current_time.strftime("%d.%m.%Y %H:%M:%S") #https://strftime.org/
+    current_time_str = current_time.strftime("%d %m %Y %H:%M:%S") #https://strftime.org/
     
     content = f'My Online Shop\n'
     content += f'Purchase Receipt\n'
@@ -27,12 +27,12 @@ def printreceipt():
         description = df.iloc[i]['description']
         amount = df.iloc[i]['amount']
         
-        qty_desc = f'{quantity}x {description}'
+        qty_desc = f'{description} x{quantity}'
         amount = f'{amount}'
         
-        white_space = " " * (receipt_text_width - (len(qty_desc) + len(amount))) 
+        #white_space = " " * (receipt_text_width - (len(qty_desc) + len(amount))) 
         
-        content += f'{qty_desc}{white_space}{amount}\n'
+        content += f'{qty_desc} {amount}\n'
 
     content += f'------------------------\n'
     content += f'Total  : {total_amount}\n'
