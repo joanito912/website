@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 st.set_page_config(layout='wide')
 
@@ -153,10 +153,13 @@ with col_left:
 
 # Right column: Chart and Results
 with col_right:
-    start_date = st.date_input("Simulation Start Date", 
-                             value=datetime.now(),
-                             min_value=datetime.now() - timedelta(days=365),
-                             max_value=datetime.now() + timedelta(days=365))
+    start_date_input = st.date_input("Simulation Start Date", 
+                                   value=date.today(),
+                                   min_value=date.today() - timedelta(days=365),
+                                   max_value=date.today() + timedelta(days=365))
+    
+    # Convert date to datetime for consistency with simulation
+    start_date = datetime.combine(start_date_input, datetime.min.time())
 
     # Run simulation with start_date parameter
     df, avg_cycle, daily_avg_use, order_annotations = simulate_ddmrp_inventory(
@@ -165,8 +168,39 @@ with col_right:
         beginning_inventory, inventory_value, sim_days, start_date
     )
     
+    # Calculate end-of-month dates for markers and table
+    end_date = start_date + timedelta(days=sim_days)
+    current_date = start_date.replace(day=1)
+    month_end_dates = []
+    
+    while current_date <= end_date:
+        next_month = current_date.replace(day=28) + timedelta(days=4)
+        last_day = next_month - timedelta(days=next_month.day)
+        if last_day >= start_date and last_day <= end_date:
+            month_end_dates.append(last_day)
+        current_date = (last_day + timedelta(days=1)).replace(day=1)
+
+    # Filter DataFrame for month-end dates only for markers
+    month_end_df = df[df['Date'].isin(month_end_dates)].copy()
+    
     fig = px.line(df, x='Date', y=['Inventory', 'ROP', 'Max_Qty', 'Critical_Level'],
                  title=f'Inventory Simulation (Starting {start_date.strftime("%Y-%m-%d")})')
+    
+    # Add markers for month ends on the Inventory line
+    fig.add_scatter(
+        x=month_end_df['Date'],
+        y=month_end_df['Inventory'],
+        mode='markers',
+        marker=dict(
+            symbol='circle',
+            size=10,
+            color='grey',
+            opacity=0.7
+        ),
+        name='Month End',
+        hovertemplate='%{x|%Y-%m-%d}<br>Inventory: %{y:.0f}'
+    )
+    
     fig.update_layout(
         yaxis_title="Inventory Qty",
         legend_title="Metrics",
@@ -195,7 +229,6 @@ with col_right:
     # Calculate end-of-month dates within simulation period
     interval_data = []
     current_date = start_date.replace(day=1)  # Start from beginning of month
-    end_date = start_date + timedelta(days=sim_days)
     
     while current_date <= end_date:
         # Get last day of current month
@@ -203,7 +236,8 @@ with col_right:
         last_day = next_month - timedelta(days=next_month.day)
         
         if last_day >= start_date and last_day <= end_date:
-            qty = df.loc[df['Date'] == last_day, 'Inventory'].values[0] if last_day in df['Date'].values else 0
+            # Find the inventory for this exact date
+            qty = df.loc[df['Date'] == last_day, 'Inventory'].iloc[0] if not df[df['Date'] == last_day].empty else 0
             value = qty * inventory_value
             interval_data.append({
                 'Date': last_day.strftime('%Y-%m-%d'),
