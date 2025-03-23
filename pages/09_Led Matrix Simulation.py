@@ -32,7 +32,7 @@ class LEDMatrix:
                 self.pixel(x, y + i, c)
         self.update_needed = True
 
-    def rectangle(self, x, y, width, height, c=1):
+    def rect(self, x, y, width, height, c=1):
         self.hline(x, y, width, c)
         self.hline(x, y + height - 1, width, c)
         self.vline(x, y, height, c)
@@ -165,35 +165,14 @@ def main():
     with col1:
         code = st.text_area(
             "Enter Python code to control the display",
-            value='''# Examples with loops and full font (end with display.show()):
-display.fill(0)  # Turn all LEDs off
-
-# For loop to draw diagonal
-for i in range(8):
-    display.pixel(i, i, 1)
-
-# While loop to draw vertical line
-x = 10
-while x < 15:
-    display.vline(x, 3, 1, 1)  # c=1 to turn on
-    x += 1
-
-# If-else to draw conditional pattern
-for y in range(8):
-    if y % 2 == 0:
-        display.hline(20, y, 2, 1)  # c=1 to turn on
-    else:
-        display.hline(21, y, 2, 0)  # c=0 to turn off
-
-display.rectangle(25, 1, 5, 4, 1)  # c=1 to turn on
-display.text("Hello123", 0, 0, 1)  # Full font test
-# Try display.fill(1) to turn all LEDs on
+            value='''display.fill(0)
+display.text("Hello123", 0, 0, 1)
 display.show()''',
-            height=400,
+            height=200,
             key="code_input",
         )
         
-        if st.button("Execute Code"):
+        if st.button("Run"):
             try:
                 display.fill(0)  # Reset to all off
                 exec(code, {'display': display})
@@ -205,11 +184,38 @@ display.show()''',
                 st.error(f"Error: {str(e)}")
 
     with col2:
+        st.write("Led Matrix")
         display_placeholder = st.empty()
         display_placeholder.image(display.get_image(), caption="LED Matrix Display", use_container_width=True)
         if not display.update_needed:
             display_placeholder.image(display.get_image(), caption="LED Matrix Display", use_container_width=True)
+        
+        with st.expander("Help"):
+            st.code('''
+                    # clear the display
+                    display.fill(0)
 
+                    # For loop to draw diagonal
+                    for i in range(8):
+                        display.pixel(i, i, 1)
+
+                    # While loop to draw vertical line
+                    x = 10
+                    while x < 15:
+                        display.vline(x, 3, 1, 1)
+                        x += 1
+
+                    # If-else to draw conditional pattern
+                    for y in range(8):
+                        if y % 2 == 0:
+                            display.hline(20, y, 2, 1)
+                        else:
+                            display.hline(21, y, 2, 0)
+
+                    display.rect(25, 1, 5, 4, 1)
+                    display.text("ABCabc123", 0, 1, 1)
+                    display.show()''')
+        
     st.markdown(
         """
         <style>
