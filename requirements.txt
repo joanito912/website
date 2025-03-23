@@ -3,3 +3,4 @@ matplotlib
 streamlit-extras
 PyPDF2
 pdf2image
+xlsxwriter
