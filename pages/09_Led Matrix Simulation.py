@@ -153,7 +153,7 @@ class LEDMatrix:
 def main():
     st.set_page_config(layout="wide")
     
-    st.title("32x8 LED Matrix Simulator")
+    st.subheader("32x8 LED Matrix Simulator")
     
     if 'display' not in st.session_state:
         st.session_state.display = LEDMatrix()
@@ -163,7 +163,6 @@ def main():
     col1, col2 = st.columns([1, 1])
     
     with col1:
-        st.subheader("Control the Display")
         code = st.text_area(
             "Enter Python code to control the display",
             value='''# Examples with loops and full font (end with display.show()):
