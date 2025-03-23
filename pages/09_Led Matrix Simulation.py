@@ -164,7 +164,7 @@ def main():
     
     with col1:
         code = st.text_area(
-            "Enter Python code to control the display",
+            "Enter Python code to control the display, see Help section",
             value='''display.fill(0)
 display.text("Hello123", 0, 0, 1)
 display.show()''',
@@ -184,7 +184,6 @@ display.show()''',
                 st.error(f"Error: {str(e)}")
 
     with col2:
-        st.write("Led Matrix")
         display_placeholder = st.empty()
         display_placeholder.image(display.get_image(), caption="LED Matrix Display", use_container_width=True)
         if not display.update_needed:
