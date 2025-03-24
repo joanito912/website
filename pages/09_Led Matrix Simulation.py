@@ -5,7 +5,7 @@ import io
 import time
 
 class LEDMatrix:
-    def __init__(self, width=48, height=8, color=[255, 0, 0]):  # Default red
+    def __init__(self, width=32, height=8, color=[255, 0, 0]):  # Default red
         self.width = width
         self.height = height
         self.matrix = np.zeros((height, width), dtype=np.uint8)
@@ -151,7 +151,7 @@ def main():
 
     with col_custom2:
         width_options = [8, 16, 24, 32, 40, 48, 56, 64]
-        selected_width = st.selectbox("Matrix Width", width_options, index=5)  # Default 32
+        selected_width = st.selectbox("Matrix Width", width_options, index=3)  # Default 32
         if selected_width != display.width:
             display = LEDMatrix(width=selected_width, height=8, color=display.color)
             st.session_state.display = display
@@ -163,7 +163,7 @@ def main():
         code = st.text_area(
             "Enter Python code to control the display and click run button ",
             value='''display.fill(0)
-display.text("Hello World", 1, 1, 1)
+display.text("Hello", 1, 1, 1)
 display.show()''',
             height=200,
             key="code_input",
