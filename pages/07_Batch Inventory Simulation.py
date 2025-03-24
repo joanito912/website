@@ -80,7 +80,7 @@ def to_excel(df):
     excel_data = output.getvalue()
     return excel_data
 
-st.header("Inventory Simulation")
+st.subheader("Batch Inventory Simulation")
 
 # Suggested Excel column names
 excel_template_columns = [
@@ -218,3 +218,4 @@ if uploaded_file is not None:
                 st.table(interval_df)
 else:
     st.info("Please upload an Excel file to start the simulation.")
+
