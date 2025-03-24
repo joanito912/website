@@ -218,3 +218,5 @@ if uploaded_file is not None:
                 st.table(interval_df)
 else:
     st.info("Please upload an Excel file to start the simulation.")
+with st.container():
+  st.write("Developed by Andi Dinata 2025, MIT License")
