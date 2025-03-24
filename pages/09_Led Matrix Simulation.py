@@ -5,7 +5,7 @@ import io
 import time
 
 class LEDMatrix:
-    def __init__(self, width=32, height=8, color=[255, 0, 0]):  # Default red
+    def __init__(self, width=48, height=8, color=[255, 0, 0]):  # Default red
         self.width = width
         self.height = height
         self.matrix = np.zeros((height, width), dtype=np.uint8)
@@ -126,6 +126,8 @@ def main():
     # Initialize or update display with custom settings
     if 'display' not in st.session_state:
         st.session_state.display = LEDMatrix()
+        st.session_state.display.text("Hello World", 0, 0, 1)  # Display "Hello World" on load
+        st.session_state.display.show()  # Update display immediately
 
     display = st.session_state.display
 
@@ -159,7 +161,7 @@ def main():
 
     with col1:
         code = st.text_area(
-            "Enter Python code to control the display",
+            "Enter Python code to control the display and click run button ",
             value='''display.fill(0)
 display.text("Hello World", 1, 1, 1)
 display.show()''',
