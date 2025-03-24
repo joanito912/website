@@ -80,7 +80,7 @@ def to_excel(df):
     excel_data = output.getvalue()
     return excel_data
 
-st.header("Inventory Simulation")
+st.subheader("Batch Inventory Simulation")
 
 # Suggested Excel column names
 excel_template_columns = [
