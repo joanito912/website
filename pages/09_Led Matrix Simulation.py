@@ -121,7 +121,7 @@ class LEDMatrix:
 # Streamlit app
 def main():
     st.set_page_config(layout="wide")
-    st.title("LED Matrix Simulator")
+    st.header("LED Matrix Simulator")
 
     # Initialize or update display with custom settings
     if 'display' not in st.session_state:
