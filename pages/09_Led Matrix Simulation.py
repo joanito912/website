@@ -118,6 +118,7 @@ class LEDMatrix:
                                     img_array[py, px] = self.color
         return Image.fromarray(img_array)
 
+
 # Streamlit app
 def main():
     st.set_page_config(layout="wide")
@@ -160,6 +161,18 @@ def main():
     col1, col2 = st.columns([1, 1])
 
     with col1:
+        st.markdown(
+            """
+            <style>
+            .stTextArea>div>div>textarea {
+                font-family: "Consolas", monospace;
+            }
+            </style>
+            """, 
+            unsafe_allow_html=True
+        )
+
+        
         code = st.text_area(
             "Enter Python code to control the display and click run button ",
             value='''display.fill(0)
@@ -199,17 +212,6 @@ display.show()''',
             - **display.show()**: Updates the display. Required at the end.
               - Example: `display.show()`
             """)
-
-    st.markdown(
-        """
-        <style>
-        textarea#code_input {
-            font-family: 'Courier New', Courier, monospace;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
 
 if __name__ == "__main__":
     main()
