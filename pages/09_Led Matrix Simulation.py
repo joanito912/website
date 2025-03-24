@@ -126,7 +126,7 @@ def main():
     # Initialize or update display with custom settings
     if 'display' not in st.session_state:
         st.session_state.display = LEDMatrix()
-        st.session_state.display.text("Hello World", 0, 0, 1)  # Display "Hello World" on load
+        st.session_state.display.text("Hello", 0, 0, 1)  # Display "Hello World" on load
         st.session_state.display.show()  # Update display immediately
 
     display = st.session_state.display
@@ -163,7 +163,7 @@ def main():
         code = st.text_area(
             "Enter Python code to control the display and click run button ",
             value='''display.fill(0)
-display.text("Hello", 1, 1, 1)
+display.text("Hello", 0, 0, 1)
 display.show()''',
             height=200,
             key="code_input",
