@@ -218,6 +218,4 @@ if uploaded_file is not None:
                 st.table(interval_df)
 else:
     st.info("Please upload an Excel file to start the simulation.")
-with st.container():
-  st.write("How to cite this application:")
-  st.write("Dinata, Andi. (2025). Batch Inventory Simulation (Version 1.0). https://colabwebapp.streamlit.app/Batch_Inventory_Simulation")
+
