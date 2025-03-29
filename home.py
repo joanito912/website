@@ -1,10 +1,6 @@
 import streamlit as st
 # st.set_page_config(layout='wide')
-st.header("Welcome to Colab Coding WebApp")
-st.write("Choose the app on the side bar")
-st.write("Thank you hope you enjoy it")
-
-st.write("Security: uploaded data is not stored in github repository")
+st.info("Welcome to Colab Coding WebApp, choose the app on the side bar. Hope you find it useful. Uploaded data is not stored in github repository")
 
 pages = {
     "Projects" : [
