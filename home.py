@@ -10,8 +10,8 @@ pages = {
     "Projects" : [
         st.Page("./pages/01_Unit Converter.py",title = "Converter",icon="📐"),
         st.Page("./pages/02_Online Marketplace.py",title = "Online Store",icon=":material/local_mall:"),
-        st.Page("./pages/03_Cashier Webapp.py",title = "Cashier"),
-        st.Page("./pages/04_Triangle Calculator.py",title = "Triangle")
+        st.Page("./pages/03_Cashier Webapp.py",title = "Cashier",icon=":material/payments:"),
+        st.Page("./pages/04_Triangle Calculator.py",title = "Triangle",icon=":material/change_history:")
     ],
     "Tools" : [
         st.Page("./pages/05_PDF Rotator.py",title="Rotate PDF"),
