@@ -10,7 +10,7 @@ pages = {
     "Projects" : [
         st.Page("01_Unit Converter.py",title = "Converter"),
         st.Page("02_Online Marketplace.py",title = "Online Store"),
-        st.Page("03_Cashier Webapp.py"),title = "Cashier"),
+        st.Page("03_Cashier Webapp.py",title = "Cashier"),
         st.Page("04_Triangle Calculator.py",title = "Triangle")
     ],
     "Tools" : [
