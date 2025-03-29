@@ -1,5 +1,5 @@
 import streamlit as st
-st.set_page_config(layout='wide')
+# st.set_page_config(layout='wide')
 st.header("Welcome to Colab Coding WebApp")
 st.write("Choose the app on the side bar")
 st.write("Thank you hope you enjoy it")
