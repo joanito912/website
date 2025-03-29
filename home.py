@@ -20,3 +20,6 @@ pages = {
         st.Page("./pages/09_Led Matrix Simulation.py",title="Led Matrix Simulation")
     ]
 }
+
+pg = st.navigation(pages)
+pg.run()
