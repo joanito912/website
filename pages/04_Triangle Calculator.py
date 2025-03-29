@@ -2,7 +2,7 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
 import math
-st.set_page_config(layout="wide")
+
 st.header("Triangle")
 
 def guess_triangle(a,b,c):

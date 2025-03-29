@@ -2,8 +2,6 @@ import streamlit as st
 import pandas as pd
 import datetime
 
-st.set_page_config(layout='wide')
-
 dummy_data = {'description':['blueband','bread','egg'],
               'price':[12000,18000,15000],
               'quantity':[1,2,3]}

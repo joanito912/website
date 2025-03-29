@@ -5,8 +5,6 @@ import plotly.express as px
 from datetime import datetime, timedelta, date
 from io import BytesIO
 
-st.set_page_config(layout='wide')
-
 # Simulate inventory function (unchanged)
 def simulate_ddmrp_inventory(rop, max_qty, critical_level, moq, 
                            delivery_lead_time, qty_per_package, monthly_usage_avg, 

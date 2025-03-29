@@ -1,8 +1,6 @@
 import streamlit as st
 import pandas as pd
 
-st.set_page_config(layout='wide')
-
 st.title("Cashier")
 data = pd.read_excel('./pages/dataset_cashier.xlsx')
 

@@ -3,8 +3,6 @@ import PyPDF2
 from io import BytesIO
 from pdf2image import convert_from_bytes
 
-st.set_page_config(layout='wide')
-
 def rotate_pdf(file_bytes, rotation_angle):
     pdfReader = PyPDF2.PdfReader(BytesIO(file_bytes))
     pdfWriter = PyPDF2.PdfWriter()
