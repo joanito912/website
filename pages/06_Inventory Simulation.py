@@ -14,8 +14,8 @@ def simulate_ddmrp_inventory(rop, max_qty, critical_level, moq,
     pending_orders = []  # (delivery_date, quantity, order_day)
     order_annotations = []
 
-    daily_consumption = np.random.uniform(daily_avg_use * 0.5, 
-                                        daily_avg_use * 1.5, 
+    daily_consumption = np.random.uniform(daily_avg_use / 1.25, 
+                                        daily_avg_use * 1.25, 
                                         sim_days)
 
     for day in range(sim_days):
