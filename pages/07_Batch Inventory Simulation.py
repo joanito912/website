@@ -5,7 +5,7 @@ import plotly.express as px
 from datetime import datetime, timedelta, date
 from io import BytesIO
 
-# Simulate inventory function (unchanged)
+# Simulate inventory function
 def simulate_ddmrp_inventory(rop, max_qty, critical_level, moq, 
                            delivery_lead_time, qty_per_package, monthly_usage_avg, 
                            beginning_inventory, inventory_value, sim_days, start_date=datetime.now()):
@@ -15,6 +15,7 @@ def simulate_ddmrp_inventory(rop, max_qty, critical_level, moq,
     inventory_levels = [inventory]
     pending_orders = []  # (delivery_date, quantity, order_day)
     order_annotations = []
+    critical_crossings = []  # Store (date, inventory) when crossing critical_level going down
 
     daily_consumption = np.random.uniform(daily_avg_use * 0.5, 
                                         daily_avg_use * 1.5, 
@@ -23,6 +24,7 @@ def simulate_ddmrp_inventory(rop, max_qty, critical_level, moq,
     for day in range(sim_days):
         current_date = start_date + timedelta(days=day)
         dates.append(current_date)
+        previous_inventory = inventory
         inventory = max(0, inventory - daily_consumption[day])
         
         # Check for delivered orders
@@ -51,6 +53,11 @@ def simulate_ddmrp_inventory(rop, max_qty, critical_level, moq,
             delivery_date = current_date + timedelta(days=delivery_lead_time)
             pending_orders.append((delivery_date, actual_order_qty, current_date))
 
+        # Detect crossing below critical_level when inventory is going down
+        if (inventory <= critical_level and 
+            (day == 0 or (previous_inventory > critical_level and inventory < previous_inventory))):
+            critical_crossings.append((current_date, inventory))
+
         inventory_levels.append(min(inventory, max_qty))
 
     df = pd.DataFrame({
@@ -68,7 +75,50 @@ def simulate_ddmrp_inventory(rop, max_qty, critical_level, moq,
     else:
         avg_cycle = None
 
-    return df, avg_cycle, daily_avg_use, order_annotations
+    # Annotations for critical crossings (markers with date and value)
+    critical_crossing_annotations = []
+    for crossing_date, crossing_inventory in critical_crossings:
+        critical_crossing_annotations.append({
+            'x': crossing_date,
+            'y': crossing_inventory,
+            'text': f'{crossing_date.strftime("%Y-%m-%d")}\n{crossing_inventory:.0f}',
+            'showarrow': True,
+            'arrowhead': 1,
+            'ax': 0,
+            'ay': -40,
+            'font': {'color': 'blue', 'size': 10},
+            'bgcolor': 'rgba(255, 255, 255, 0.8)',
+            'bordercolor': 'blue',
+            'borderwidth': 1
+        })
+
+    # Calculate time gaps and horizontal lines between critical crossings
+    critical_gap_annotations = []
+    if len(critical_crossings) > 1:
+        for i in range(1, len(critical_crossings)):
+            prev_date, prev_inventory = critical_crossings[i-1]
+            curr_date, curr_inventory = critical_crossings[i]
+            gap_days = (curr_date - prev_date).days
+            mid_date = prev_date + timedelta(days=gap_days // 2)
+            
+            # Gap days annotation
+            critical_gap_annotations.append({
+                'x': mid_date,
+                'y': critical_level,
+                'text': f'<- {gap_days} days ->',
+                'showarrow': False,
+                'font': {'color': 'red', 'size': 12},
+                'bgcolor': 'rgba(255, 255, 255, 0.8)',
+                'bordercolor': 'red',
+                'borderwidth': 1
+            })
+
+            # Horizontal line setup
+            df['Critical_Crossing_Line'] = np.nan
+            df.loc[df['Date'].isin([prev_date, curr_date]), 'Critical_Crossing_Line'] = critical_level
+
+    # Return critical_crossings along with other values
+    return df, avg_cycle, daily_avg_use, order_annotations, critical_crossing_annotations, critical_gap_annotations, critical_crossings
 
 # Function to convert DataFrame to Excel bytes
 def to_excel(df):
@@ -136,84 +186,115 @@ if uploaded_file is not None:
                                         max_value=date.today() + timedelta(days=365))
         start_date = datetime.combine(start_date_input, datetime.min.time())
 
-        # Create columns for each material
+        # Calculate number of rows needed (2 columns fixed)
         num_materials = len(materials_data)
-        cols = st.columns(num_materials)  # Create as many columns as there are materials
+        num_rows = (num_materials + 1) // 2  # Ceiling division to get rows
 
-        # Simulation and visualization for each material in its own column
-        for idx, (index, row) in enumerate(materials_data.iterrows()):
-            with cols[idx]:  # Use the corresponding column for this material
-                material_name = row['Material Name']
-                monthly_usage_avg = row['Monthly Usage Average']
-                beginning_inventory = row['Beginning Inventory']
-                delivery_lead_time = row['Lead Time (days)']
-                critical_level = row['Critical Level']
-                rop = row['Re-Order Point (ROP)']
-                max_qty = row['Maximum Quantity']
-                inventory_value = row['Inventory Value per UoM']
-                qty_per_package = row['Quantity per Package']
-                moq = row['Minimum Order Quantity (MOQ)']
-                sim_days = int(row['Simulation Days'])  # Ensure integer
+        # Simulation and visualization in a 2-column, multi-row layout
+        for row_idx in range(num_rows):
+            cols = st.columns(2)
+            for col_idx in [0, 1]:
+                material_idx = row_idx * 2 + col_idx
+                if material_idx < num_materials:
+                    with cols[col_idx]:
+                        row = materials_data.iloc[material_idx]
+                        material_name = row['Material Name']
+                        monthly_usage_avg = row['Monthly Usage Average']
+                        beginning_inventory = row['Beginning Inventory']
+                        delivery_lead_time = row['Lead Time (days)']
+                        critical_level = row['Critical Level']
+                        rop = row['Re-Order Point (ROP)']
+                        max_qty = row['Maximum Quantity']
+                        inventory_value = row['Inventory Value per UoM']
+                        qty_per_package = row['Quantity per Package']
+                        moq = row['Minimum Order Quantity (MOQ)']
+                        sim_days = int(row['Simulation Days'])
 
-                # Run simulation
-                df, avg_cycle, daily_avg_use, order_annotations = simulate_ddmrp_inventory(
-                    rop, max_qty, critical_level, moq, delivery_lead_time, qty_per_package,
-                    monthly_usage_avg, beginning_inventory, inventory_value, sim_days, start_date
-                )
+                        # Run simulation (now returns critical_crossings)
+                        df, avg_cycle, daily_avg_use, order_annotations, critical_crossing_annotations, critical_gap_annotations, critical_crossings = simulate_ddmrp_inventory(
+                            rop, max_qty, critical_level, moq, delivery_lead_time, qty_per_package,
+                            monthly_usage_avg, beginning_inventory, inventory_value, sim_days, start_date
+                        )
 
-                # Chart with material name in title
-                fig = px.line(df, x='Date', y=['Inventory', 'ROP', 'Max_Qty', 'Critical_Level'],
-                             title=f'Inventory Simulation for {material_name} (Starting {start_date.strftime("%Y-%m-%d")})')
-                
-                # Month-end markers
-                end_date = start_date + timedelta(days=sim_days)
-                current_date = start_date.replace(day=1)
-                month_end_dates = []
-                while current_date <= end_date:
-                    next_month = current_date.replace(day=28) + timedelta(days=4)
-                    last_day = next_month - timedelta(days=next_month.day)
-                    if last_day >= start_date and last_day <= end_date:
-                        month_end_dates.append(last_day)
-                    current_date = (last_day + timedelta(days=1)).replace(day=1)
-                
-                month_end_df = df[df['Date'].isin(month_end_dates)].copy()
-                fig.add_scatter(
-                    x=month_end_df['Date'],
-                    y=month_end_df['Inventory'],
-                    mode='markers',
-                    marker=dict(symbol='circle', size=10, color='grey', opacity=0.7),
-                    name='Month End',
-                    hovertemplate='%{x|%Y-%m-%d}<br>Inventory: %{y:.0f}'
-                )
-                
-                fig.update_layout(
-                    yaxis_title="Inventory Qty",
-                    legend_title="Metrics",
-                    xaxis_title="Date",
-                    yaxis=dict(range=[0, max(max_qty, df['Inventory'].max()) * 1.1]),
-                    annotations=order_annotations
-                )
-                st.plotly_chart(fig, use_container_width=True)
+                        # Chart with material name in title
+                        fig = px.line(df, x='Date', y=['Inventory', 'ROP', 'Max_Qty', 'Critical_Level'],
+                                     title=f'Inventory Simulation for {material_name} (Starting {start_date.strftime("%Y-%m-%d")})')
+                        
+                        # Month-end markers
+                        end_date = start_date + timedelta(days=sim_days)
+                        current_date = start_date.replace(day=1)
+                        month_end_dates = []
+                        while current_date <= end_date:
+                            next_month = current_date.replace(day=28) + timedelta(days=4)
+                            last_day = next_month - timedelta(days=next_month.day)
+                            if last_day >= start_date and last_day <= end_date:
+                                month_end_dates.append(last_day)
+                            current_date = (last_day + timedelta(days=1)).replace(day=1)
+                        
+                        month_end_df = df[df['Date'].isin(month_end_dates)].copy()
+                        fig.add_scatter(
+                            x=month_end_df['Date'],
+                            y=month_end_df['Inventory'],
+                            mode='markers',
+                            marker=dict(symbol='circle', size=10, color='grey', opacity=0.7),
+                            name='Month End',
+                            hovertemplate='%{x|%Y-%m-%d}<br>Inventory: %{y:.0f}'
+                        )
 
-                # Interval table with material name in header
-                interval_data = []
-                current_date = start_date.replace(day=1)
-                while current_date <= end_date:
-                    next_month = current_date.replace(day=28) + timedelta(days=4)
-                    last_day = next_month - timedelta(days=next_month.day)
-                    if last_day >= start_date and last_day <= end_date:
-                        qty = df.loc[df['Date'] == last_day, 'Inventory'].iloc[0] if not df[df['Date'] == last_day].empty else 0
-                        value = qty * inventory_value
-                        interval_data.append({
-                            'Date': last_day.strftime('%Y-%m-%d'),
-                            'Inventory Quantity': f"{qty:,.0f}",
-                            'Inventory Value': f"{value:,.0f}"
-                        })
-                    current_date = (last_day + timedelta(days=1)).replace(day=1)
-                
-                interval_df = pd.DataFrame(interval_data)
-                st.write(f"Month-End Inventory for {material_name}")
-                st.table(interval_df)
+                        # Add markers for critical crossings
+                        if critical_crossings:  # Check if critical_crossings is not empty
+                            crossing_dates = [crossing[0] for crossing in critical_crossings]
+                            crossing_values = [crossing[1] for crossing in critical_crossings]
+                            fig.add_scatter(
+                                x=crossing_dates,
+                                y=crossing_values,
+                                mode='markers',
+                                marker=dict(symbol='x', size=10, color='blue'),
+                                name='Critical Crossing',
+                                hovertemplate='%{x|%Y-%m-%d}<br>Inventory: %{y:.0f}'
+                            )
+
+                        # Add horizontal line between critical crossings
+                        if 'Critical_Crossing_Line' in df.columns:
+                            fig.add_scatter(
+                                x=df['Date'],
+                                y=df['Critical_Crossing_Line'],
+                                mode='lines',
+                                line=dict(color='red', dash='dash'),
+                                name='Gap Line',
+                                hoverinfo='skip'
+                            )
+
+                        # Combine all annotations
+                        all_annotations = order_annotations + critical_crossing_annotations + critical_gap_annotations
+                        fig.update_layout(
+                            yaxis_title="Inventory Qty",
+                            legend_title="Metrics",
+                            xaxis_title="Date",
+                            yaxis=dict(range=[0, max(max_qty, df['Inventory'].max()) * 1.1]),
+                            annotations=all_annotations
+                        )
+                        st.plotly_chart(fig, use_container_width=True)
+
+                        # Interval table with material name in header
+                        interval_data = []
+                        current_date = start_date.replace(day=1)
+                        while current_date <= end_date:
+                            next_month = current_date.replace(day=28) + timedelta(days=4)
+                            last_day = next_month - timedelta(days=next_month.day)
+                            if last_day >= start_date and last_day <= end_date:
+                                qty = df.loc[df['Date'] == last_day, 'Inventory'].iloc[0] if not df[df['Date'] == last_day].empty else 0
+                                value = qty * inventory_value
+                                interval_data.append({
+                                    'Date': last_day.strftime('%Y-%m-%d'),
+                                    'Inventory Quantity': f"{qty:,.0f}",
+                                    'Inventory Value': f"{value:,.0f}"
+                                })
+                            current_date = (last_day + timedelta(days=1)).replace(day=1)
+                        
+                        interval_df = pd.DataFrame(interval_data)
+                        st.write(f"Month-End Inventory for {material_name}")
+                        st.table(interval_df)
+
 else:
     st.info("Please upload an Excel file to start the simulation.")
-

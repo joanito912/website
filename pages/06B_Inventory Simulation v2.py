@@ -6,31 +6,42 @@ from datetime import datetime, timedelta, date
 
 def simulate_ddmrp_inventory(rop, max_qty, critical_level, moq, 
                            delivery_lead_time, qty_per_package, monthly_usage_avg, 
-                           beginning_inventory, inventory_value, sim_days=90, start_date=datetime.now()):
+                           actual_monthly_usage, beginning_inventory, inventory_value, 
+                           sim_days=90, start_date=datetime.now()):
     daily_avg_use = monthly_usage_avg / 30
-    inventory = beginning_inventory
+    inventory_avg = beginning_inventory
+    inventory_actual = beginning_inventory
     dates = [start_date]
-    inventory_levels = [inventory]
+    inventory_levels_avg = [inventory_avg]
+    inventory_levels_actual = [inventory_actual]
     pending_orders = []  # (delivery_date, quantity, order_day)
     order_annotations = []
 
-    daily_consumption = np.random.uniform(daily_avg_use / 1.25, 
-                                        daily_avg_use * 1.25, 
-                                        sim_days)
+    # Generate daily consumption for both average and actual
+    daily_consumption_avg = np.random.uniform(daily_avg_use / 1.25, 
+                                            daily_avg_use * 1.25, 
+                                            sim_days)
+    daily_consumption_actual = np.random.uniform(actual_monthly_usage / 37.5,  # 1.25 * 30
+                                               actual_monthly_usage / 22.5,  # 0.75 * 30
+                                               sim_days)
 
     for day in range(sim_days):
         current_date = start_date + timedelta(days=day)
         dates.append(current_date)
-        inventory = max(0, inventory - daily_consumption[day])
         
-        # Check for delivered orders
+        # Update both inventories
+        inventory_avg = max(0, inventory_avg - daily_consumption_avg[day])
+        inventory_actual = max(0, inventory_actual - daily_consumption_actual[day])
+        
+        # Check for delivered orders (same for both simulations)
         for delivery_date, qty, order_date in pending_orders[:]:
             if current_date >= delivery_date:
-                inventory += qty
+                inventory_avg += qty
+                inventory_actual += qty
                 order_amount = qty * inventory_value
                 order_annotations.append({
                     'x': delivery_date,
-                    'y': inventory,
+                    'y': inventory_avg,
                     'text': f'Order: {int(qty)}\n({order_amount:,.0f})',
                     'showarrow': True,
                     'arrowhead': 1,
@@ -39,21 +50,23 @@ def simulate_ddmrp_inventory(rop, max_qty, critical_level, moq,
                 })
                 pending_orders.remove((delivery_date, qty, order_date))
         
-        # Check if inventory falls below ROP and place order if needed
-        if inventory <= rop and not any(current_date < d[0] < current_date + timedelta(days=delivery_lead_time) 
+        # Check if inventory falls below ROP and place order if needed (using avg inventory)
+        if inventory_avg <= rop and not any(current_date < d[0] < current_date + timedelta(days=delivery_lead_time) 
                                      for d in pending_orders):
             actual_order_qty = max(moq, 
-                                 np.ceil((max_qty - inventory) / qty_per_package) * qty_per_package)
-            actual_order_qty = min(actual_order_qty, max_qty - inventory)
+                                 np.ceil((max_qty - inventory_avg) / qty_per_package) * qty_per_package)
+            actual_order_qty = min(actual_order_qty, max_qty - inventory_avg)
             
             delivery_date = current_date + timedelta(days=delivery_lead_time)
             pending_orders.append((delivery_date, actual_order_qty, current_date))
 
-        inventory_levels.append(min(inventory, max_qty))
+        inventory_levels_avg.append(min(inventory_avg, max_qty))
+        inventory_levels_actual.append(min(inventory_actual, max_qty))
 
     df = pd.DataFrame({
         'Date': dates,
-        'Inventory': inventory_levels,
+        'Inventory_Avg': inventory_levels_avg,
+        'Inventory_Actual': inventory_levels_actual,
         'ROP': [rop] * len(dates),
         'Max_Qty': [max_qty] * len(dates),
         'Critical_Level': [critical_level] * len(dates)
@@ -81,6 +94,12 @@ with col_left:
                                           max_value=9000, 
                                           value=900, 
                                           step=1)
+        
+        actual_monthly_usage = st.number_input("Actual Monthly Usage", 
+                                             min_value=10, 
+                                             max_value=9000, 
+                                             value=900, 
+                                             step=1)
         
         daily_usage_avg = monthly_usage_avg / 30
         
@@ -156,17 +175,15 @@ with col_right:
                                    min_value=date.today() - timedelta(days=365),
                                    max_value=date.today() + timedelta(days=365))
     
-    # Convert date to datetime for consistency with simulation
     start_date = datetime.combine(start_date_input, datetime.min.time())
 
-    # Run simulation with start_date parameter
     df, avg_cycle, daily_avg_use, order_annotations = simulate_ddmrp_inventory(
         rop, max_qty, critical_level, moq, 
         delivery_lead_time, qty_per_package, monthly_usage_avg, 
-        beginning_inventory, inventory_value, sim_days, start_date
+        actual_monthly_usage, beginning_inventory, inventory_value, 
+        sim_days, start_date
     )
     
-    # Calculate end-of-month dates for markers and table
     end_date = start_date + timedelta(days=sim_days)
     current_date = start_date.replace(day=1)
     month_end_dates = []
@@ -178,16 +195,14 @@ with col_right:
             month_end_dates.append(last_day)
         current_date = (last_day + timedelta(days=1)).replace(day=1)
 
-    # Filter DataFrame for month-end dates only for markers
     month_end_df = df[df['Date'].isin(month_end_dates)].copy()
     
-    fig = px.line(df, x='Date', y=['Inventory', 'ROP', 'Max_Qty', 'Critical_Level'],
+    fig = px.line(df, x='Date', y=['Inventory_Avg', 'Inventory_Actual', 'ROP', 'Max_Qty', 'Critical_Level'],
                  title=f'Inventory Simulation (Starting {start_date.strftime("%Y-%m-%d")})')
     
-    # Add markers for month ends on the Inventory line
     fig.add_scatter(
         x=month_end_df['Date'],
-        y=month_end_df['Inventory'],
+        y=month_end_df['Inventory_Avg'],
         mode='markers',
         marker=dict(
             symbol='circle',
@@ -195,7 +210,21 @@ with col_right:
             color='grey',
             opacity=0.7
         ),
-        name='Month End',
+        name='Month End (Avg)',
+        hovertemplate='%{x|%Y-%m-%d}<br>Inventory: %{y:.0f}'
+    )
+    
+    fig.add_scatter(
+        x=month_end_df['Date'],
+        y=month_end_df['Inventory_Actual'],
+        mode='markers',
+        marker=dict(
+            symbol='diamond',
+            size=10,
+            color='red',
+            opacity=0.7
+        ),
+        name='Month End (Actual)',
         hovertemplate='%{x|%Y-%m-%d}<br>Inventory: %{y:.0f}'
     )
     
@@ -203,12 +232,13 @@ with col_right:
         yaxis_title="Inventory Qty",
         legend_title="Metrics",
         xaxis_title="Date",
-        yaxis=dict(range=[0, max(max_qty, df['Inventory'].max()) * 1.1]),
+        yaxis=dict(range=[0, max(max_qty, df['Inventory_Avg'].max(), df['Inventory_Actual'].max()) * 1.1]),
         annotations=order_annotations
     )
     st.plotly_chart(fig, use_container_width=True)
         
     st.write(f"Daily Average Use: {daily_avg_use:.1f} units")
+    st.write(f"Daily Actual Use: {(actual_monthly_usage/30):.1f} units")
 
 with col_left:
     rop_formula = (r"\text{ROP} = (\text{Daily Usage} \times \text{Lead Time}) + \text{Critical Level} = "
@@ -224,25 +254,26 @@ with col_left:
     st.latex(order_qty_formula)
 
 with col_right:
-    # Calculate end-of-month dates within simulation period
     interval_data = []
-    current_date = start_date.replace(day=1)  # Start from beginning of month
+    current_date = start_date.replace(day=1)
     
     while current_date <= end_date:
-        # Get last day of current month
         next_month = current_date.replace(day=28) + timedelta(days=4)
         last_day = next_month - timedelta(days=next_month.day)
         
         if last_day >= start_date and last_day <= end_date:
-            # Find the inventory for this exact date
-            qty = df.loc[df['Date'] == last_day, 'Inventory'].iloc[0] if not df[df['Date'] == last_day].empty else 0
-            value = qty * inventory_value
+            qty_avg = df.loc[df['Date'] == last_day, 'Inventory_Avg'].iloc[0] if not df[df['Date'] == last_day].empty else 0
+            qty_actual = df.loc[df['Date'] == last_day, 'Inventory_Actual'].iloc[0] if not df[df['Date'] == last_day].empty else 0
+            value_avg = qty_avg * inventory_value
+            value_actual = qty_actual * inventory_value
             interval_data.append({
                 'Date': last_day.strftime('%Y-%m-%d'),
-                'Inventory Quantity': f"{qty:,.0f}",
-                'Inventory Value': f"{value:,.0f}"
+                'Inv Qty (Avg)': f"{qty_avg:,.0f}",
+                'Inv Value (Avg)': f"{value_avg:,.0f}",
+                'Inv Qty (Actual)': f"{qty_actual:,.0f}",
+                'Inv Value (Actual)': f"{value_actual:,.0f}"
             })
-        current_date = (last_day + timedelta(days=1)).replace(day=1)  # Move to next month
+        current_date = (last_day + timedelta(days=1)).replace(day=1)
 
     interval_df = pd.DataFrame(interval_data)
     st.table(interval_df)
