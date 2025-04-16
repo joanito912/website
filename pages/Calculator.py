@@ -212,7 +212,6 @@ def roll_weight_calculator():
         
 
 def main():
-    st.title("The Ugly Calculator")
     roll_weight_calculator()
 
 if __name__ == "__main__":
