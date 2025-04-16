@@ -15,7 +15,7 @@ pages = {
         st.Page("./pages/06_Inventory Simulation.py",title="Inventory Simulation",icon=":material/inventory:"),
         st.Page("./pages/06B_Inventory Simulation v2.py",title="Inventory Simulation",icon=":material/inventory:"),
         st.Page("./pages/07_Batch Inventory Simulation.py",title="Batch Inventory Simulation",icon=":material/inventory_2:"),
-        st.Page("./pages/09_Led Matrix Simulation.py",title="Led Matrix Simulation",icon=":material/apps:")
+        st.Page("./pages/Calculator.py",title="Led Matrix Simulation",icon=":material/apps:")
     ],
     "Class Project" : [
         st.Page("./pages/Fun Converter.py",title = "Fun Converter",icon=":material/scale:"),
