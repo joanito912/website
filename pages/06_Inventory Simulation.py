@@ -68,7 +68,7 @@ def simulate_ddmrp_inventory(rop, max_qty, critical_level, moq,
 
     return df, avg_cycle, daily_avg_use, order_annotations
 
-st.header("Inventory Simulation")
+st.header("Inventory Simulation 1")
 
 col_left, col_right = st.columns(2)
 
@@ -203,12 +203,20 @@ with col_right:
         yaxis_title="Inventory Qty",
         legend_title="Metrics",
         xaxis_title="Date",
+        height=600,  # 👈 Increase height
+        margin=dict(l=40, r=40, t=60, b=40),  # 👈 Optional: manage whitespace
         yaxis=dict(range=[0, max(max_qty, df['Inventory'].max()) * 1.1]),
         annotations=order_annotations
     )
-    st.plotly_chart(fig, use_container_width=True)
+    # st.markdown("---")
+    # st.subheader("Inventory Trend")
+    # st.plotly_chart(fig, use_container_width=True)
         
     st.write(f"Daily Average Use: {daily_avg_use:.1f} units")
+st.markdown("---")
+st.subheader("Inventory Trend")
+st.plotly_chart(fig, use_container_width=True)
+
 
 with col_left:
     rop_formula = (r"\text{ROP} = (\text{Daily Usage} \times \text{Lead Time}) + \text{Critical Level} = "

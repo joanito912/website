@@ -232,13 +232,18 @@ with col_right:
         yaxis_title="Inventory Qty",
         legend_title="Metrics",
         xaxis_title="Date",
+        height=600,
+        margin=dict(l=40, r=40, t=60, b=40),
         yaxis=dict(range=[0, max(max_qty, df['Inventory_Avg'].max(), df['Inventory_Actual'].max()) * 1.1]),
         annotations=order_annotations
     )
-    st.plotly_chart(fig, use_container_width=True)
+    # st.plotly_chart(fig, use_container_width=True)
         
     st.write(f"Daily Average Use: {daily_avg_use:.1f} units")
     st.write(f"Daily Actual Use: {(actual_monthly_usage/30):.1f} units")
+st.markdown("---")
+st.subheader("Inventory Trend")
+st.plotly_chart(fig, use_container_width=True)
 
 with col_left:
     rop_formula = (r"\text{ROP} = (\text{Daily Usage} \times \text{Lead Time}) + \text{Critical Level} = "
